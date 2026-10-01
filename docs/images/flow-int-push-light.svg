@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="636" viewBox="0 0 1280 636" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-labelledby="t d"><title id="t">Integration flow 1 - hourly case and health hand-off</title><desc id="d">MERIDIAN pushes its cases and SOC health to LODESTAR every hour over a signed, idempotent webhook.</desc>
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6e7781"/></marker><marker id="ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#cf222e"/></marker></defs>
+<rect width="1280" height="636" fill="#ffffff"/>
+<text x="32" y="40" font-size="20" font-weight="750" fill="#1f2328" text-anchor="start" xml:space="preserve">Integration flow 1 - hourly case and health hand-off</text>
+<rect x="12.0" y="58" width="156" height="40" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<text x="90.0" y="68" font-size="12" font-weight="650" fill="#1f2328" text-anchor="middle" xml:space="preserve">MERIDIAN</text>
+<text x="90.0" y="83" font-size="12" font-weight="650" fill="#1f2328" text-anchor="middle" xml:space="preserve">scheduler</text>
+<line x1="90.0" y1="98" x2="90.0" y2="616" stroke="#d1d9e0" stroke-width="1.2" stroke-dasharray="4 4"/>
+<rect x="232.0" y="58" width="156" height="40" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<text x="310.0" y="68" font-size="12" font-weight="650" fill="#1f2328" text-anchor="middle" xml:space="preserve">MERIDIAN</text>
+<text x="310.0" y="83" font-size="12" font-weight="650" fill="#1f2328" text-anchor="middle" xml:space="preserve">store</text>
+<line x1="310.0" y1="98" x2="310.0" y2="616" stroke="#d1d9e0" stroke-width="1.2" stroke-dasharray="4 4"/>
+<rect x="452.0" y="58" width="156" height="40" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<text x="530.0" y="68" font-size="12" font-weight="650" fill="#1f2328" text-anchor="middle" xml:space="preserve">Key Vault /</text>
+<text x="530.0" y="83" font-size="12" font-weight="650" fill="#1f2328" text-anchor="middle" xml:space="preserve">Secrets Mgr</text>
+<line x1="530.0" y1="98" x2="530.0" y2="616" stroke="#d1d9e0" stroke-width="1.2" stroke-dasharray="4 4"/>
+<rect x="672.0" y="58" width="156" height="40" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<text x="750.0" y="68" font-size="12" font-weight="650" fill="#1f2328" text-anchor="middle" xml:space="preserve">LODESTAR</text>
+<text x="750.0" y="83" font-size="12" font-weight="650" fill="#1f2328" text-anchor="middle" xml:space="preserve">/api/ingest/soc</text>
+<line x1="750.0" y1="98" x2="750.0" y2="616" stroke="#d1d9e0" stroke-width="1.2" stroke-dasharray="4 4"/>
+<rect x="892.0" y="58" width="156" height="40" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<text x="970.0" y="68" font-size="12" font-weight="650" fill="#1f2328" text-anchor="middle" xml:space="preserve">LODESTAR</text>
+<text x="970.0" y="83" font-size="12" font-weight="650" fill="#1f2328" text-anchor="middle" xml:space="preserve">store</text>
+<line x1="970.0" y1="98" x2="970.0" y2="616" stroke="#d1d9e0" stroke-width="1.2" stroke-dasharray="4 4"/>
+<rect x="1112.0" y="58" width="156" height="40" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<text x="1190.0" y="68" font-size="12" font-weight="650" fill="#1f2328" text-anchor="middle" xml:space="preserve">LODESTAR</text>
+<text x="1190.0" y="83" font-size="12" font-weight="650" fill="#1f2328" text-anchor="middle" xml:space="preserve">pipeline</text>
+<line x1="1190.0" y1="98" x2="1190.0" y2="616" stroke="#d1d9e0" stroke-width="1.2" stroke-dasharray="4 4"/>
+<path d="M90.0,120 h40 v18 h-36" fill="none" stroke="#6e7781" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="138.0" y="132" font-size="12" font-weight="400" fill="#1f2328" text-anchor="start" xml:space="preserve">leader lock held; 'lodestar' step due (&gt;= 1 h since cursor)</text>
+<path d="M90.0,174 L306.0,174" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<text x="200.0" y="167" font-size="12" font-weight="500" fill="#1f2328" text-anchor="middle" xml:space="preserve">open cases + cases changed in 7 days; source freshness; MTTD / MTTR</text>
+<path d="M310.0,220 L94.0,220" fill="none" stroke="#6e7781" stroke-width="1.7" stroke-dasharray="6 4" marker-end="url(#ah)"/>
+<text x="200.0" y="213" font-size="12" font-weight="500" fill="#1f2328" text-anchor="middle" xml:space="preserve">findings[] (finding_id = meridian-&lt;case_id&gt;) + health</text>
+<path d="M530.0,266 L94.0,266" fill="none" stroke="#6e7781" stroke-width="1.7" stroke-dasharray="6 4" marker-end="url(#ah)"/>
+<text x="310.0" y="259" font-size="12" font-weight="500" fill="#1f2328" text-anchor="middle" xml:space="preserve">LODESTAR_WEBHOOK_SECRET (env, loaded at start)</text>
+<path d="M90.0,312 L746.0,312" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<text x="420.0" y="305" font-size="12" font-weight="500" fill="#1f2328" text-anchor="middle" xml:space="preserve">POST ?org=&lt;key&gt;  X-Lodestar-Timestamp + X-Lodestar-Signature</text>
+<path d="M750.0,350 h40 v18 h-36" fill="none" stroke="#6e7781" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="798.0" y="362" font-size="12" font-weight="400" fill="#1f2328" text-anchor="start" xml:space="preserve">size &lt;= 5 MB; |now - ts| &lt;= 300 s; HMAC(org secret) matches</text>
+<path d="M750.0,404 L966.0,404" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<text x="860.0" y="397" font-size="12" font-weight="500" fill="#1f2328" text-anchor="middle" xml:space="preserve">upsert by finding_id (domain=soc); set SOC health</text>
+<path d="M750.0,450 L94.0,450" fill="none" stroke="#6e7781" stroke-width="1.7" stroke-dasharray="6 4" marker-end="url(#ah)"/>
+<text x="420.0" y="443" font-size="12" font-weight="500" fill="#1f2328" text-anchor="middle" xml:space="preserve">202 {accepted: n}  |  401 bad signature  |  404 unknown org  |  422 bad item</text>
+<path d="M90.0,496 L306.0,496" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<text x="200.0" y="489" font-size="12" font-weight="500" fill="#1f2328" text-anchor="middle" xml:space="preserve">cursor scheduler:lodestar_push = now (only after a 2xx)</text>
+<path d="M1190.0,542 L974.0,542" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<text x="1080.0" y="535" font-size="12" font-weight="500" fill="#1f2328" text-anchor="middle" xml:space="preserve">next run: SOC connector reads inbox (30-day retention) -&gt; score -&gt; Today list</text>
+<rect x="60" y="570" width="1160" height="30" rx="5" fill="#f6f8fa" stroke="#9a6700" stroke-width="1"/>
+<text x="640.0" y="590" font-size="12" font-weight="600" fill="#1f2328" text-anchor="middle" xml:space="preserve">A failed push is logged and isolated; the next cycle retries. LODESTAR's freshness KRI shows the gap.</text>
+</svg>

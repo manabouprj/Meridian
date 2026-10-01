@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="900" viewBox="0 0 1280 900" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-labelledby="t d"><title id="t">MERIDIAN log ingestion for hybrid estates</title><desc id="d">On-premises, cloud and SaaS sources reach MERIDIAN by six paths. All of them land raw batches in object storage; the ingestion worker normalises them to OCSF, enriches and de-duplicates them, and writes the WORM lake, where each class can have its own retention.</desc>
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6e7781"/></marker><marker id="ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#cf222e"/></marker></defs>
+<rect width="1280" height="900" fill="#ffffff"/>
+<text x="32" y="44" font-size="22" font-weight="750" fill="#1f2328" text-anchor="start" xml:space="preserve">Log ingestion: six ways in, one landing zone, one schema</text>
+<rect x="24" y="70" width="330" height="660" rx="8" fill="#f6f8fa" stroke="#d1d9e0" stroke-width="1"/>
+<rect x="24" y="80" width="4" height="640" rx="2" fill="#0969da"/>
+<text x="40" y="94" font-size="14" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Where the logs are</text>
+<rect x="44" y="118" width="290" height="130" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="56" cy="135" r="4" fill="#0969da"/>
+<text x="66" y="139" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">On-premises</text>
+<text x="54" y="158" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">Windows servers + DCs (Security, Sysmon,</text>
+<text x="54" y="175" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">  PowerShell, Defender)  -&gt; WEF / WEC</text>
+<text x="54" y="192" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">Linux (rsyslog, syslog-ng, journald, auditd)</text>
+<text x="54" y="209" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">Firewalls, proxies, VPN, switches, WAF</text>
+<text x="54" y="226" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">OT / port systems, appliances (CEF, LEEF)</text>
+<rect x="44" y="266" width="290" height="150" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="56" cy="283" r="4" fill="#0e7490"/>
+<text x="66" y="287" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Cloud</text>
+<text x="54" y="306" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">Azure: Entra, Activity, Defender XDR,</text>
+<text x="54" y="323" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">  VNet flow logs, Key Vault, resource logs</text>
+<text x="54" y="340" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">AWS: CloudTrail (org), VPC Flow Logs,</text>
+<text x="54" y="357" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">  Route 53 Resolver, GuardDuty, Security Lake</text>
+<text x="54" y="374" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">Workloads: CloudWatch Logs, AKS / EKS,</text>
+<text x="54" y="391" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">  containers, application logs</text>
+<rect x="44" y="434" width="290" height="110" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="56" cy="451" r="4" fill="#8250df"/>
+<text x="66" y="455" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">SaaS and identity</text>
+<text x="54" y="474" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">Microsoft 365 audit, Okta, GitHub,</text>
+<text x="54" y="491" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">Google Workspace, Salesforce, Atlassian,</text>
+<text x="54" y="508" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">Zscaler, Netskope, CrowdStrike (OCSF)</text>
+<rect x="44" y="562" width="290" height="150" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="56" cy="579" r="4" fill="#9a6700"/>
+<text x="66" y="583" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Existing SIEM (migration)</text>
+<text x="54" y="602" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">Splunk HEC senders, Cribl, Logstash</text>
+<text x="54" y="619" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">QRadar / ArcSight forwarders (LEEF, CEF)</text>
+<text x="54" y="636" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">Sentinel: Log Analytics data export</text>
+<text x="54" y="653" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">Run side by side, then cut over</text>
+<text x="54" y="670" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">source by source</text>
+<rect x="380" y="70" width="430" height="660" rx="8" fill="#f6f8fa" stroke="#d1d9e0" stroke-width="1"/>
+<rect x="380" y="80" width="4" height="640" rx="2" fill="#8250df"/>
+<text x="396" y="94" font-size="14" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Six ways in (all private, all authenticated)</text>
+<rect x="400" y="118" width="390" height="86" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="412" cy="135" r="4" fill="#8250df"/>
+<text x="422" y="139" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">1  Cloud-native export to object storage</text>
+<text x="410" y="158" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">diagnostic settings, org trail, flow logs, Security Lake;</text>
+<text x="410" y="175" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">no agent, no MERIDIAN code in the path</text>
+<rect x="400" y="220" width="390" height="86" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="412" cy="237" r="4" fill="#8250df"/>
+<text x="422" y="241" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">2  Streaming -&gt; capture</text>
+<text x="410" y="260" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">Event Hubs Capture (Avro) / Kinesis Firehose (JSON, gzip)</text>
+<text x="410" y="277" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">for high-volume or near-real-time feeds</text>
+<rect x="400" y="322" width="390" height="86" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="412" cy="339" r="4" fill="#8250df"/>
+<text x="422" y="343" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">3  Syslog receiver</text>
+<text x="410" y="362" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">UDP / TCP 5514, TLS 6514 with optional mutual TLS;</text>
+<text x="410" y="379" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">RFC 3164 / 5424, CEF, LEEF, JSON lines</text>
+<rect x="400" y="424" width="390" height="86" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="412" cy="441" r="4" fill="#8250df"/>
+<text x="422" y="445" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">4  HTTPS push</text>
+<text x="410" y="464" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">/api/ingest/&lt;source&gt;: HMAC or source token, gzip, NDJSON;</text>
+<text x="410" y="481" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">/services/collector: Splunk HEC-compatible</text>
+<rect x="400" y="526" width="390" height="86" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="412" cy="543" r="4" fill="#8250df"/>
+<text x="422" y="547" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">5  API pull collector</text>
+<text x="410" y="566" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">polls SaaS APIs: OAuth2 / bearer, cursor, pagination,</text>
+<text x="410" y="583" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">two-step (Microsoft 365 contentUri)</text>
+<rect x="400" y="628" width="390" height="86" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="412" cy="645" r="4" fill="#8250df"/>
+<text x="422" y="649" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">6  Shipper -&gt; object storage</text>
+<text x="410" y="668" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">Fluent Bit, Vector, Cribl, Logstash, NXLog Agent</text>
+<text x="410" y="685" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">write batches straight to Blob / S3</text>
+<rect x="836" y="70" width="420" height="660" rx="8" fill="#f6f8fa" stroke="#d1d9e0" stroke-width="1"/>
+<rect x="836" y="80" width="4" height="640" rx="2" fill="#1a7f37"/>
+<text x="852" y="94" font-size="14" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Inside MERIDIAN</text>
+<rect x="856" y="118" width="380" height="96" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="868" cy="135" r="4" fill="#1a7f37"/>
+<text x="878" y="139" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Landing zone (ADLS / S3)</text>
+<text x="866" y="158" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">raw batches exactly as received, gzip, immutable;</text>
+<text x="866" y="175" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">90 days, replayable: fix a mapper, then replay</text>
+<rect x="856" y="232" width="380" height="120" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="868" cy="249" r="4" fill="#1a7f37"/>
+<text x="878" y="253" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Ingestion worker (scales on queue depth)</text>
+<text x="866" y="272" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">mapper per source: windows | syslog | cef | leef | mde |</text>
+<text x="866" y="289" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">  entra | cloudtrail | ocsf | json (field map)</text>
+<text x="866" y="306" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">-&gt; OCSF-flat (42 typed columns, raw record kept)</text>
+<text x="866" y="323" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">-&gt; UTC time, enrichment, de-duplication</text>
+<rect x="856" y="370" width="380" height="110" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="868" cy="387" r="4" fill="#1a7f37"/>
+<text x="878" y="391" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Security lake (Parquet, WORM)</text>
+<text x="866" y="410" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">events/cls=&lt;class&gt;/dt=&lt;day&gt;/hr=&lt;hour&gt;</text>
+<text x="866" y="427" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">Object Lock / immutability for the retention period</text>
+<text x="866" y="444" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">tiering: cool / IA at 30 d, archive / Glacier IR later</text>
+<rect x="856" y="498" width="380" height="96" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="868" cy="515" r="4" fill="#9a6700"/>
+<text x="878" y="519" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Rotation</text>
+<text x="866" y="538" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">end of life per OCSF class (e.g. flows 13 months,</text>
+<text x="866" y="555" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">authentication 7 years); never before WORM ends</text>
+<rect x="856" y="612" width="380" height="100" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="868" cy="629" r="4" fill="#cf222e"/>
+<text x="878" y="633" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Detection and agents</text>
+<text x="866" y="652" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">streaming Sigma rules on every batch; correlations</text>
+<text x="866" y="669" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">every 5 min; agents query through MCP only</text>
+<path d="M1046,214 L1046,230" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<path d="M1046,352 L1046,368" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<path d="M1046,480 L1046,496" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<path d="M1046,594 L1046,610" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<path d="M790,161 L812,161 L812,166 L854,166" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<path d="M790,263 L812,263 L812,166 L854,166" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<path d="M790,365 L812,365 L812,166 L854,166" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<path d="M790,467 L812,467 L812,166 L854,166" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<path d="M790,569 L812,569 L812,166 L854,166" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<path d="M790,671 L812,671 L812,166 L854,166" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<path d="M334,183 L398,183" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<path d="M334,341 L398,341" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<path d="M334,489 L398,489" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<path d="M334,637 L398,637" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<rect x="24" y="748" width="1232" height="138" rx="8" fill="#f6f8fa" stroke="#d1d9e0" stroke-width="1"/>
+<text x="40" y="772" font-size="14" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">What makes this different from a SIEM ingestion tier</text>
+<text x="40" y="796" font-size="12" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">No per-GB licence and no daily cap: storage is paid at object-storage prices, so nothing is filtered out to save money.</text>
+<text x="40" y="813" font-size="12" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">Nothing is lost to parsing: unparsed lines are kept as OCSF Base Events and every raw batch stays replayable for 90 days.</text>
+<text x="40" y="830" font-size="12" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">One schema for every engine (DuckDB, Athena, Azure Data Explorer) and every agent; mappers are tested code, previewed with map-test.</text>
+<text x="40" y="847" font-size="12" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">Retention is a storage setting, per log type, enforced by WORM - not a licence tier. Silent sources and reject rates are metrics.</text>
+</svg>

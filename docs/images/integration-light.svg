@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="760" viewBox="0 0 1280 760" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-labelledby="t d"><title id="t">MERIDIAN and LODESTAR integration</title><desc id="d">MERIDIAN detects, triages and contains; it pushes cases and SOC health to LODESTAR over a signed webhook. LODESTAR correlates them with the other control domains and puts them on the CISO's Today list and board reports. Both products read the same CMDB and identity exports.</desc>
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6e7781"/></marker><marker id="ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#cf222e"/></marker></defs>
+<rect width="1280" height="760" fill="#ffffff"/>
+<text x="32" y="44" font-size="22" font-weight="750" fill="#1f2328" text-anchor="start" xml:space="preserve">MERIDIAN -&gt; LODESTAR</text>
+<text x="330" y="44" font-size="14" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">one-way, signed, idempotent hand-off of SOC cases and health</text>
+<rect x="24" y="70" width="560" height="480" rx="8" fill="#f6f8fa" stroke="#d1d9e0" stroke-width="1"/>
+<rect x="24" y="80" width="4" height="460" rx="2" fill="#8250df"/>
+<text x="40" y="94" font-size="14" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">MERIDIAN  (SOC engine - detect, triage, investigate, contain)</text>
+<rect x="44" y="120" width="250" height="70" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="56" cy="137" r="4" fill="#0e7490"/>
+<text x="66" y="141" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Lake + rules</text>
+<text x="54" y="160" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">OCSF Parquet, Sigma, correlations</text>
+<rect x="314" y="120" width="250" height="70" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="326" cy="137" r="4" fill="#8250df"/>
+<text x="336" y="141" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Agents over MCP</text>
+<text x="324" y="160" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">triage, investigate, hunt</text>
+<rect x="44" y="210" width="520" height="80" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="56" cy="227" r="4" fill="#9a6700"/>
+<text x="66" y="231" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Cases</text>
+<text x="54" y="250" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">entities, verdict, severity, MITRE, approvals, containment</text>
+<text x="54" y="267" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">store: PostgreSQL (alerts, cases, audit chain)</text>
+<rect x="44" y="310" width="520" height="110" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="56" cy="327" r="4" fill="#8250df"/>
+<text x="66" y="331" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Scheduler: LODESTAR step (hourly, leader-locked)</text>
+<text x="54" y="350" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">lodestar_payload(): open cases + cases changed in 7 days</text>
+<text x="54" y="367" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">identity mapping (most critical asset, user, entity_keys)</text>
+<text x="54" y="384" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">health: coverage_pct, incidents_open, mttd_hours, mttr_hours,</text>
+<text x="54" y="401" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">        log_sources_silent</text>
+<rect x="44" y="440" width="520" height="90" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="56" cy="457" r="4" fill="#cf222e"/>
+<text x="66" y="461" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Signing</text>
+<text x="54" y="480" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">HMAC-SHA256 over '&lt;unix ts&gt;.&lt;body&gt;'  -&gt;  X-Lodestar-Timestamp,</text>
+<text x="54" y="497" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">X-Lodestar-Signature: sha256=&lt;hex&gt;; secret in Key Vault / Secrets Manager</text>
+<rect x="696" y="70" width="560" height="480" rx="8" fill="#f6f8fa" stroke="#d1d9e0" stroke-width="1"/>
+<rect x="696" y="80" width="4" height="460" rx="2" fill="#1a7f37"/>
+<text x="712" y="94" font-size="14" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">LODESTAR  (CISO prioritisation and reporting)</text>
+<rect x="716" y="120" width="520" height="80" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="728" cy="137" r="4" fill="#cf222e"/>
+<text x="738" y="141" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">POST /api/ingest/soc?org=&lt;key&gt;</text>
+<text x="726" y="160" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">verifies signature + 300 s timestamp window; 5 MB cap;</text>
+<text x="726" y="177" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">upserts by finding_id (re-sends update, never duplicate)</text>
+<rect x="716" y="220" width="520" height="70" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="728" cy="237" r="4" fill="#1a7f37"/>
+<text x="738" y="241" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Webhook inbox -&gt; SOC connector agent</text>
+<text x="726" y="260" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">adapter: webhook, product: MERIDIAN; health -&gt; ControlHealth</text>
+<rect x="716" y="310" width="520" height="90" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="728" cy="327" r="4" fill="#1a7f37"/>
+<text x="738" y="331" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Correlation + scoring (LRS)</text>
+<text x="726" y="350" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">CMDB criticality, exposure, actively_exploited_in_env,</text>
+<text x="726" y="367" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">toxic combinations with VMDR / identity / EDR findings</text>
+<rect x="716" y="420" width="250" height="110" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="728" cy="437" r="4" fill="#9a6700"/>
+<text x="738" y="441" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">CISO Today / Week</text>
+<text x="726" y="460" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">prioritised list, owners,</text>
+<text x="726" y="477" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">Slack / Teams digest</text>
+<rect x="986" y="420" width="250" height="110" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="998" cy="437" r="4" fill="#9a6700"/>
+<text x="1008" y="441" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">KRIs + board reports</text>
+<text x="996" y="460" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">MTTD, incidents open,</text>
+<text x="996" y="477" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">SOC coverage, trends</text>
+<path d="M584,485 L640,485 L640,160 L714,160" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<text x="596" y="300" font-size="12" font-weight="650" fill="#59636e" text-anchor="start" xml:space="preserve">HTTPS</text>
+<text x="596" y="316" font-size="12" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">hourly</text>
+<path d="M304,190 L304,208" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<path d="M304,290 L304,308" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<path d="M304,420 L304,438" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<path d="M976,200 L976,218" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<path d="M976,290 L976,308" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<path d="M976,400 L976,418" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<rect x="24" y="570" width="1232" height="80" rx="8" fill="#f6f8fa" stroke="#0969da" stroke-width="1" stroke-dasharray="5 4"/>
+<text x="40" y="596" font-size="14" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Shared context (one source of truth, two readers)</text>
+<text x="40" y="620" font-size="12" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">CMDB export (assets.csv: asset_id, name, criticality, exposure, aliases, ips) and identity export (identities.csv) feed BOTH</text>
+<text x="40" y="637" font-size="12" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">products, so MERIDIAN's 'most critical asset' and LODESTAR's asset criticality agree. Deep link: evidence.case_id -&gt; MERIDIAN console.</text>
+<rect x="24" y="666" width="1232" height="74" rx="8" fill="#f6f8fa" stroke="#d1d9e0" stroke-width="1"/>
+<text x="40" y="690" font-size="14" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">What does not cross</text>
+<text x="40" y="714" font-size="12" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">No raw telemetry, no command lines, no sample events, no credentials. Titles, severity, status, entities, verdict, MITRE and</text>
+<text x="40" y="731" font-size="12" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">aggregate KPIs only. LODESTAR never calls MERIDIAN; MERIDIAN never reads LODESTAR (phase 1).</text>
+</svg>

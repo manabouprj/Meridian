@@ -1,0 +1,30 @@
+{% extends "_base.html" %}{% block body %}
+<div class="grid">
+ <div class="kpi"><div class="v">{{ approvals|length }}</div><div class="l">approvals waiting for you</div></div>
+ <div class="kpi"><div class="v">{{ cases|length }}</div><div class="l">active cases</div></div>
+ <div class="kpi"><div class="v">{{ cases|selectattr("severity",">=",4)|list|length }}</div><div class="l">high / critical cases</div></div>
+ <div class="kpi"><div class="v">{{ alerts|selectattr("status","equalto","closed")|list|length }}/{{ alerts|length }}</div><div class="l">recent alerts auto-closed as benign</div></div>
+</div>
+<h2>Approvals waiting</h2>
+<div class="wrap"><table><tr><th>Requested</th><th>Action</th><th>Target</th><th>Case</th><th>Why (from the agent)</th><th>By</th><th></th></tr>
+{% for a in approvals %}<tr><td class="muted">{{ a.created_at.strftime("%d %b %H:%M") }}</td><td><b>{{ a.action }}</b></td><td>{{ a.target }}</td>
+<td><a href="/cases/{{ a.case_id }}">{{ a.case_id }}</a></td><td>{{ a.rationale }}</td><td class="muted">{{ a.requested_by }}</td>
+<td style="white-space:nowrap">{% if me.role in ("responder","admin") %}<button class="ok" onclick="decide('{{ a.approval_id }}','approve')">Approve</button>
+<button class="no" onclick="decide('{{ a.approval_id }}','reject')">Reject</button>{% else %}<span class="muted">responder only</span>{% endif %}</td></tr>
+{% else %}<tr><td colspan="7" class="muted">Nothing waiting.</td></tr>{% endfor %}</table></div>
+<h2>Active cases</h2>
+<div class="wrap"><table><tr><th>Severity</th><th>Case</th><th>Entity</th><th>Status</th><th>Verdict</th><th>Updated</th></tr>
+{% for c in cases %}<tr><td><span class="sev s{{ c.severity }}">{{ {1:"info",2:"low",3:"medium",4:"high",5:"critical",6:"critical"}[c.severity] }}</span></td>
+<td><a href="/cases/{{ c.case_id }}">{{ c.title }}</a><div class="muted">{{ c.case_id }}</div></td><td>{{ c.entity }}</td><td>{{ c.status }}</td>
+<td>{{ c.verdict or "-" }}{% if c.confidence %} <span class="muted">({{ "%.0f"|format(c.confidence*100) }}%)</span>{% endif %}</td>
+<td class="muted">{{ c.updated_at.strftime("%d %b %H:%M") }}</td></tr>{% else %}<tr><td colspan="6" class="muted">No active cases.</td></tr>{% endfor %}</table></div>
+<h2>Recent alerts</h2>
+<div class="wrap"><table><tr><th>Severity</th><th>Detection</th><th>Entity</th><th>Events</th><th>Status</th><th>Verdict</th><th>Last seen</th></tr>
+{% for a in alerts %}<tr><td><span class="sev s{{ a.severity }}">{{ {0:"unknown",1:"info",2:"low",3:"medium",4:"high",5:"critical",6:"critical"}[a.severity] }}</span></td>
+<td>{{ a.title }}<div>{% for m in (a.mitre or [])[:3] %}<span class="tag">{{ m }}</span>{% endfor %}</div></td><td>{{ a.entity }}</td><td>{{ a.event_count }}</td>
+<td>{{ a.status }}</td><td>{{ a.verdict or "-" }}</td><td class="muted">{{ a.last_seen.strftime("%d %b %H:%M") }}</td></tr>{% endfor %}</table></div>
+<h2>Agent runs</h2>
+<div class="wrap"><table><tr><th>Started</th><th>Agent</th><th>Ref</th><th>Provider / model</th><th>Tool calls</th><th>Tokens in/out</th><th>Cost</th><th>Outcome</th></tr>
+{% for r in runs %}<tr><td class="muted">{{ r.started_at.strftime("%d %b %H:%M:%S") }}</td><td>{{ r.agent }}</td><td>{{ r.ref }}</td><td>{{ r.provider }} <span class="muted">{{ r.model }}</span></td>
+<td>{{ r.tool_calls }}</td><td>{{ r.input_tokens }} / {{ r.output_tokens }}</td><td>${{ "%.4f"|format(r.cost_usd or 0) }}</td><td>{{ r.outcome }}</td></tr>{% endfor %}</table></div>
+{% endblock %}

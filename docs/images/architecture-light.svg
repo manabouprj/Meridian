@@ -1,0 +1,186 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="1060" viewBox="0 0 1280 1060" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-labelledby="t d"><title id="t">MERIDIAN logical architecture</title><desc id="d">Security controls deliver telemetry into a landing zone; deterministic workers normalise it to OCSF, enrich it and detect threats; the lake keeps it in Parquet under WORM retention. Alerts go to AI agents that work only through MCP servers; containment is requested and executed only after a human approves. Cases feed LODESTAR.</desc>
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6e7781"/></marker><marker id="ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#cf222e"/></marker></defs>
+<rect width="1280" height="1060" fill="#ffffff"/>
+<text x="32" y="44" font-size="24" font-weight="750" fill="#1f2328" text-anchor="start" xml:space="preserve">MERIDIAN</text>
+<text x="178" y="44" font-size="15" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">SIEM-less detection, investigation and response with AI agents over MCP</text>
+<rect x="24" y="70" width="1232" height="120" rx="8" fill="#f6f8fa" stroke="#d1d9e0" stroke-width="1"/>
+<rect x="24" y="80" width="4" height="100" rx="2" fill="#0969da"/>
+<text x="40" y="94" font-size="14" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">1  Sources</text>
+<text x="150" y="94" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">read-only; no agent on the data path</text>
+<rect x="40" y="112" width="192" height="62" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="52" cy="129" r="4" fill="#0969da"/>
+<text x="62" y="133" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Endpoint / XDR</text>
+<text x="50" y="152" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">Defender, CrowdStrike, S1</text>
+<rect x="242" y="112" width="192" height="62" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="254" cy="129" r="4" fill="#0969da"/>
+<text x="264" y="133" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Identity</text>
+<text x="252" y="152" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">Entra ID, Okta</text>
+<rect x="444" y="112" width="192" height="62" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="456" cy="129" r="4" fill="#0969da"/>
+<text x="466" y="133" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Cloud control plane</text>
+<text x="454" y="152" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">CloudTrail, Azure Activity</text>
+<rect x="646" y="112" width="192" height="62" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="658" cy="129" r="4" fill="#0969da"/>
+<text x="668" y="133" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Network</text>
+<text x="656" y="152" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">firewall, proxy, DNS (syslog CEF)</text>
+<rect x="848" y="112" width="192" height="62" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="860" cy="129" r="4" fill="#0969da"/>
+<text x="870" y="133" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">SaaS &amp; e-mail</text>
+<text x="858" y="152" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">M365, Google, Zscaler</text>
+<rect x="1050" y="112" width="192" height="62" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="1062" cy="129" r="4" fill="#0969da"/>
+<text x="1072" y="133" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Threat intel</text>
+<text x="1060" y="152" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">ISAC / CERT / MISP lists</text>
+<rect x="24" y="212" width="610" height="132" rx="8" fill="#f6f8fa" stroke="#d1d9e0" stroke-width="1"/>
+<rect x="24" y="222" width="4" height="112" rx="2" fill="#1a7f37"/>
+<text x="40" y="236" font-size="14" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">2  Collection - native exports, no SIEM agents</text>
+<rect x="40" y="256" width="140" height="70" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="52" cy="273" r="4" fill="#1a7f37"/>
+<text x="62" y="277" font-size="12" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Event Hubs Capture</text>
+<text x="50" y="296" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">Azure: XDR, diagnostics</text>
+<rect x="188" y="256" width="140" height="70" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="200" cy="273" r="4" fill="#1a7f37"/>
+<text x="210" y="277" font-size="12" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">S3 / Security Lake</text>
+<text x="198" y="296" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">AWS: CloudTrail, OCSF</text>
+<rect x="336" y="256" width="140" height="70" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="348" cy="273" r="4" fill="#1a7f37"/>
+<text x="358" y="277" font-size="12" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">syslog receiver</text>
+<text x="346" y="296" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">CEF from appliances</text>
+<rect x="484" y="256" width="140" height="70" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="496" cy="273" r="4" fill="#1a7f37"/>
+<text x="506" y="277" font-size="12" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">HTTPS push</text>
+<text x="494" y="296" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">HMAC + timestamp</text>
+<rect x="650" y="212" width="606" height="132" rx="8" fill="#f6f8fa" stroke="#d1d9e0" stroke-width="1"/>
+<rect x="650" y="222" width="4" height="112" rx="2" fill="#1a7f37"/>
+<text x="666" y="236" font-size="14" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">3  Landing zone</text>
+<text x="666" y="254" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">raw batches, immutable, replayable (90 days)</text>
+<rect x="668" y="262" width="270" height="64" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="680" cy="279" r="4" fill="#1a7f37"/>
+<text x="690" y="283" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Object storage</text>
+<text x="678" y="302" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">ADLS Gen2 container / S3 bucket</text>
+<rect x="954" y="262" width="284" height="64" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="966" cy="279" r="4" fill="#1a7f37"/>
+<text x="976" y="283" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">New-batch notification</text>
+<text x="964" y="302" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">Event Grid -&gt; Storage Queue / S3 -&gt; SQS</text>
+<rect x="24" y="366" width="1232" height="150" rx="8" fill="#f6f8fa" stroke="#d1d9e0" stroke-width="1"/>
+<rect x="24" y="376" width="4" height="130" rx="2" fill="#9a6700"/>
+<text x="40" y="390" font-size="14" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">4  Ingestion workers (deterministic, auto-scaled on queue depth)</text>
+<rect x="40" y="412" width="286" height="86" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="52" cy="429" r="4" fill="#9a6700"/>
+<text x="62" y="433" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Map to OCSF</text>
+<text x="50" y="452" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">6 format mappers + field maps</text>
+<rect x="344" y="412" width="286" height="86" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="356" cy="429" r="4" fill="#9a6700"/>
+<text x="366" y="433" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Enrich</text>
+<text x="354" y="452" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">CMDB criticality, identity,</text>
+<text x="354" y="469" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">threat-intel IOC hits</text>
+<path d="M328,455 L342,455" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<rect x="648" y="412" width="286" height="86" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="660" cy="429" r="4" fill="#9a6700"/>
+<text x="670" y="433" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Write lake</text>
+<text x="658" y="452" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">Parquet (zstd), cls/dt/hr</text>
+<text x="658" y="469" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">idempotent per batch</text>
+<path d="M632,455 L646,455" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<rect x="952" y="412" width="286" height="86" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="964" cy="429" r="4" fill="#9a6700"/>
+<text x="974" y="433" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Stream detections</text>
+<text x="962" y="452" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">Sigma rules per event</text>
+<text x="962" y="469" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">alert de-dup / suppression</text>
+<path d="M936,455 L950,455" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<rect x="24" y="538" width="600" height="168" rx="8" fill="#f6f8fa" stroke="#d1d9e0" stroke-width="1"/>
+<rect x="24" y="548" width="4" height="148" rx="2" fill="#0e7490"/>
+<text x="40" y="562" font-size="14" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">5  Security data lake</text>
+<text x="40" y="580" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">OCSF-flat Parquet; WORM (Object Lock / immutability); tiered</text>
+<rect x="40" y="600" width="176" height="88" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="52" cy="617" r="4" fill="#0e7490"/>
+<text x="62" y="621" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">DuckDB</text>
+<text x="50" y="640" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">embedded, no cluster</text>
+<text x="50" y="657" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">small / mid estates</text>
+<rect x="228" y="600" width="176" height="88" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="240" cy="617" r="4" fill="#0e7490"/>
+<text x="250" y="621" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Amazon Athena</text>
+<text x="238" y="640" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">serverless Trino</text>
+<text x="238" y="657" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">pay per TB scanned</text>
+<rect x="416" y="600" width="192" height="88" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="428" cy="617" r="4" fill="#0e7490"/>
+<text x="438" y="621" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Azure Data Explorer</text>
+<text x="426" y="640" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">KQL, large estates</text>
+<text x="426" y="657" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">(optional)</text>
+<rect x="640" y="538" width="616" height="168" rx="8" fill="#f6f8fa" stroke="#d1d9e0" stroke-width="1"/>
+<rect x="640" y="548" width="4" height="148" rx="2" fill="#9a6700"/>
+<text x="656" y="562" font-size="14" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">6  Detection &amp; alerting</text>
+<rect x="656" y="582" width="286" height="106" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="668" cy="599" r="4" fill="#9a6700"/>
+<text x="678" y="603" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Correlation rules</text>
+<text x="666" y="622" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">every 5 min on the lake</text>
+<text x="666" y="639" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">spray, brute force, MFA fatigue,</text>
+<text x="666" y="656" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">DNS tunnel, mass change</text>
+<rect x="956" y="582" width="284" height="106" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="968" cy="599" r="4" fill="#9a6700"/>
+<text x="978" y="603" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Alert store + work queue</text>
+<text x="966" y="622" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">PostgreSQL (Aurora / Flexible)</text>
+<text x="966" y="639" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">dedupe -&gt; triage queue</text>
+<text x="966" y="656" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">audit hash chain</text>
+<rect x="24" y="728" width="820" height="190" rx="8" fill="#f6f8fa" stroke="#d1d9e0" stroke-width="1"/>
+<rect x="24" y="738" width="4" height="170" rx="2" fill="#8250df"/>
+<text x="40" y="752" font-size="14" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">7  Agent layer - every tool call goes through MCP</text>
+<rect x="40" y="772" width="112" height="58" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="52" cy="789" r="4" fill="#8250df"/>
+<text x="62" y="793" font-size="12" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Triage</text>
+<text x="50" y="812" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">every new alert</text>
+<rect x="160" y="772" width="112" height="58" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="172" cy="789" r="4" fill="#8250df"/>
+<text x="182" y="793" font-size="12" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Investigate</text>
+<text x="170" y="812" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">cases sev &gt;= 4</text>
+<rect x="280" y="772" width="112" height="58" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="292" cy="789" r="4" fill="#8250df"/>
+<text x="302" y="793" font-size="12" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Hunt</text>
+<text x="290" y="812" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">IOC / hypothesis</text>
+<rect x="400" y="772" width="112" height="58" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="412" cy="789" r="4" fill="#8250df"/>
+<text x="422" y="793" font-size="12" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Tune</text>
+<text x="410" y="812" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">noisy rules</text>
+<rect x="40" y="842" width="472" height="60" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="52" cy="859" r="4" fill="#8250df"/>
+<text x="62" y="863" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">MCP servers (streamable HTTP, bearer + scopes)</text>
+<text x="50" y="882" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">lake (read) · context (read) · cases (notes) · response (REQUEST only)</text>
+<rect x="528" y="772" width="300" height="130" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="540" cy="789" r="4" fill="#8250df"/>
+<text x="550" y="793" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Models</text>
+<text x="538" y="812" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">Foundry: Claude, Azure-hosted, US Data Zone</text>
+<text x="538" y="829" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">  (managed identity, private endpoint)</text>
+<text x="538" y="846" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">Bedrock: Claude, cross-region profile</text>
+<text x="538" y="863" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">  (IAM role, bedrock-runtime endpoint)</text>
+<text x="538" y="880" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">Halted / over budget = rules analyst</text>
+<rect x="860" y="728" width="396" height="190" rx="8" fill="#f6f8fa" stroke="#d1d9e0" stroke-width="1"/>
+<rect x="860" y="738" width="4" height="170" rx="2" fill="#cf222e"/>
+<text x="876" y="752" font-size="14" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">8  People decide</text>
+<rect x="876" y="772" width="364" height="56" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="888" cy="789" r="4" fill="#cf222e"/>
+<text x="898" y="793" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Console · Slack · Teams</text>
+<text x="886" y="812" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">cases, approvals, four-eyes, SSO + roles</text>
+<rect x="876" y="842" width="176" height="60" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="888" cy="859" r="4" fill="#cf222e"/>
+<text x="898" y="863" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Response executor</text>
+<text x="886" y="882" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">after approval only</text>
+<rect x="1064" y="842" width="176" height="60" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="1076" cy="859" r="4" fill="#cf222e"/>
+<text x="1086" y="863" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Targets</text>
+<text x="1074" y="882" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">MDE, Entra, IAM, EDL</text>
+<path d="M1052,872 L1062,872" fill="none" stroke="#cf222e" stroke-width="1.7" marker-end="url(#ahr)"/>
+<rect x="24" y="940" width="1232" height="96" rx="8" fill="#f6f8fa" stroke="#d1d9e0" stroke-width="1"/>
+<text x="40" y="966" font-size="14" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Hand-offs and operations</text>
+<text x="40" y="990" font-size="12" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">LODESTAR: cases pushed as SOC findings (signed webhook) -&gt; CISO Today list, KRIs (MTTD, incidents) and board reports</text>
+<text x="40" y="1007" font-size="12" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">Ops: /healthz /readyz /metrics (Prometheus) · JSON logs · agent spend budgets · golden-set evaluation gates model changes</text>
+<text x="40" y="1024" font-size="12" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">Security: no keys (managed identity / IAM roles), private endpoints, KMS / CMK, WORM lake, tamper-evident audit chain</text>
+<path d="M330,190 L330,210" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<path d="M940,190 L940,210" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<path d="M634,290 L666,290" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<path d="M1096,344 L1096,364" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<text x="1102.0" y="348.0" font-size="11" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">notify</text>
+<path d="M924,516 L924,536" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<path d="M320,516 L320,536" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<path d="M1098,706 L1098,726 L700,726" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<path d="M624,645 L654,645" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<path d="M844,800 L874,800" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+</svg>

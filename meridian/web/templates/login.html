@@ -1,0 +1,8 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MERIDIAN sign in</title>
+<style>body{background:#0b1016;color:#e6edf3;font:16px -apple-system,"Segoe UI",Helvetica,Arial,sans-serif}main{max-width:360px;margin:15vh auto;display:grid;gap:12px}
+input,button,a.b{padding:9px;border-radius:5px;border:1px solid #263342;background:#121a23;color:#e6edf3;font:inherit}a.b{display:block;text-align:center;background:#2f5bd3;text-decoration:none}</style></head>
+<body><main><h1 style="font-size:20px;margin:0">MERIDIAN</h1>
+{% if sso %}<a class="b" href="/auth/login">Sign in with single sign-on</a>{% endif %}
+{% if error %}<p role="alert" style="color:#ff7b72">{{ error }}</p>{% endif %}
+<form method="post" action="/login" style="display:grid;gap:8px"><label for="k">API key</label><input id="k" name="key" type="password" autocomplete="current-password" required><button>Sign in with key</button></form>
+</main></body></html>

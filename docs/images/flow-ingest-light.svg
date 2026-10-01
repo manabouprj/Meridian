@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="590" viewBox="0 0 1280 590" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-labelledby="t d"><title id="t">Flow 1 - Ingestion and streaming detection</title><desc id="d">Telemetry arrives as files, is normalised and enriched by deterministic workers, written to the lake and evaluated by streaming rules; alerts are de-duplicated and queued for triage.</desc>
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6e7781"/></marker><marker id="ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#cf222e"/></marker></defs>
+<rect width="1280" height="590" fill="#ffffff"/>
+<text x="32" y="40" font-size="20" font-weight="750" fill="#1f2328" text-anchor="start" xml:space="preserve">Flow 1 - Ingestion and streaming detection</text>
+<rect x="12.0" y="58" width="156" height="40" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<text x="90.0" y="78" font-size="12" font-weight="650" fill="#1f2328" text-anchor="middle" xml:space="preserve">Security control</text>
+<line x1="90.0" y1="98" x2="90.0" y2="570" stroke="#d1d9e0" stroke-width="1.2" stroke-dasharray="4 4"/>
+<rect x="232.0" y="58" width="156" height="40" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<text x="310.0" y="68" font-size="12" font-weight="650" fill="#1f2328" text-anchor="middle" xml:space="preserve">Landing</text>
+<text x="310.0" y="83" font-size="12" font-weight="650" fill="#1f2328" text-anchor="middle" xml:space="preserve">(ADLS / S3)</text>
+<line x1="310.0" y1="98" x2="310.0" y2="570" stroke="#d1d9e0" stroke-width="1.2" stroke-dasharray="4 4"/>
+<rect x="452.0" y="58" width="156" height="40" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<text x="530.0" y="68" font-size="12" font-weight="650" fill="#1f2328" text-anchor="middle" xml:space="preserve">Queue</text>
+<text x="530.0" y="83" font-size="12" font-weight="650" fill="#1f2328" text-anchor="middle" xml:space="preserve">(Storage Q / SQS)</text>
+<line x1="530.0" y1="98" x2="530.0" y2="570" stroke="#d1d9e0" stroke-width="1.2" stroke-dasharray="4 4"/>
+<rect x="672.0" y="58" width="156" height="40" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<text x="750.0" y="78" font-size="12" font-weight="650" fill="#1f2328" text-anchor="middle" xml:space="preserve">Ingestion worker</text>
+<line x1="750.0" y1="98" x2="750.0" y2="570" stroke="#d1d9e0" stroke-width="1.2" stroke-dasharray="4 4"/>
+<rect x="892.0" y="58" width="156" height="40" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<text x="970.0" y="68" font-size="12" font-weight="650" fill="#1f2328" text-anchor="middle" xml:space="preserve">Lake</text>
+<text x="970.0" y="83" font-size="12" font-weight="650" fill="#1f2328" text-anchor="middle" xml:space="preserve">(Parquet, WORM)</text>
+<line x1="970.0" y1="98" x2="970.0" y2="570" stroke="#d1d9e0" stroke-width="1.2" stroke-dasharray="4 4"/>
+<rect x="1112.0" y="58" width="156" height="40" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<text x="1190.0" y="78" font-size="12" font-weight="650" fill="#1f2328" text-anchor="middle" xml:space="preserve">Alert store</text>
+<line x1="1190.0" y1="98" x2="1190.0" y2="570" stroke="#d1d9e0" stroke-width="1.2" stroke-dasharray="4 4"/>
+<path d="M90.0,128 L306.0,128" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<text x="200.0" y="121" font-size="12" font-weight="500" fill="#1f2328" text-anchor="middle" xml:space="preserve">export / Capture / syslog flush / HTTPS push (batch file)</text>
+<path d="M310.0,174 L526.0,174" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<text x="420.0" y="167" font-size="12" font-weight="500" fill="#1f2328" text-anchor="middle" xml:space="preserve">BlobCreated / ObjectCreated notification</text>
+<path d="M530.0,220 L746.0,220" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<text x="640.0" y="213" font-size="12" font-weight="500" fill="#1f2328" text-anchor="middle" xml:space="preserve">receive (visibility 15 min)</text>
+<path d="M750.0,266 L314.0,266" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<text x="530.0" y="259" font-size="12" font-weight="500" fill="#1f2328" text-anchor="middle" xml:space="preserve">get batch (Avro / JSON / CEF lines)</text>
+<path d="M750.0,304 h40 v18 h-36" fill="none" stroke="#6e7781" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="798.0" y="316" font-size="12" font-weight="400" fill="#1f2328" text-anchor="start" xml:space="preserve">map -&gt; OCSF-flat, de-duplicate, enrich (CMDB, identity, IOC)</text>
+<path d="M750.0,358 L966.0,358" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<text x="860.0" y="351" font-size="12" font-weight="500" fill="#1f2328" text-anchor="middle" xml:space="preserve">write Parquet cls/dt/hr/&lt;batch-hash&gt; (idempotent)</text>
+<path d="M750.0,396 h40 v18 h-36" fill="none" stroke="#6e7781" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="798.0" y="408" font-size="12" font-weight="400" fill="#1f2328" text-anchor="start" xml:space="preserve">Sigma rules per event; group by rule + entity + window</text>
+<path d="M750.0,450 L1186.0,450" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<text x="970.0" y="443" font-size="12" font-weight="500" fill="#1f2328" text-anchor="middle" xml:space="preserve">upsert alert; new alert -&gt; enqueue 'triage'</text>
+<path d="M750.0,496 L534.0,496" fill="none" stroke="#6e7781" stroke-width="1.7" stroke-dasharray="6 4" marker-end="url(#ah)"/>
+<text x="640.0" y="489" font-size="12" font-weight="500" fill="#1f2328" text-anchor="middle" xml:space="preserve">delete message (ack); mark batch processed</text>
+<rect x="60" y="524" width="1160" height="30" rx="5" fill="#f6f8fa" stroke="#9a6700" stroke-width="1"/>
+<text x="640.0" y="544" font-size="12" font-weight="600" fill="#1f2328" text-anchor="middle" xml:space="preserve">Every 5 minutes: correlation rules run as aggregate queries on the lake (DuckDB / Athena / ADX) -&gt; alerts</text>
+</svg>

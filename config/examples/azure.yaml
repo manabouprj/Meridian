@@ -1,0 +1,52 @@
+# MERIDIAN on Azure with Microsoft Foundry (values come from the Terraform outputs / Container App env)
+org: {name: Your Organisation, industry: banking, crown_jewels: [Core banking, Payments gateway]}
+cloud: azure
+lake:
+  root: ${MERIDIAN_LAKE_ROOT}             # abfss://lake@<account>.dfs.core.windows.net
+  landing: ${MERIDIAN_LANDING_ROOT}       # abfss://landing@<account>.dfs.core.windows.net
+  query_engine: duckdb                    # adx for large estates: set adx.cluster_uri and enable_adx in Terraform
+  # adx: {cluster_uri: "https://adx<prefix><sfx>.<region>.kusto.windows.net", database: meridian, table: MeridianEvents}
+queue: {type: azure, account: "${MERIDIAN_QUEUE_ACCOUNT}", name: meridian-landing, container: landing}
+store: {url: "${MERIDIAN_DATABASE_URL}"}
+sources:
+  # Event Hubs Capture writes <hub>/<namespace>/<hub>/... into the landing container
+  - {key: mde, format: mde, prefix: mde}
+  - {key: entra, format: entra, prefix: entra}
+  - key: azure-activity                    # subscription Activity log via diagnostic settings -> Event Hub azure-activity
+    format: json
+    prefix: azure-activity
+    settings:
+      class_uid: 6003                     # API Activity
+      field_map: {time: time, api_operation: operationName, resource: resourceId, src_ip: callerIpAddress,
+                  status: resultType, activity_name: category, user: identity.claims.name}
+  - {key: firewall, format: cef}
+  - {key: syslog, format: syslog, settings: {timezone: Asia/Dubai}}     # syslog receiver: Linux, network, appliances (CEF/LEEF auto)
+  - {key: windows, format: windows, settings: {timezone: "+04:00"}}  # NXLog / Fluent Bit / Winlogbeat -> landing or push
+  - {key: proxy, format: cef}
+detections: {paths: [config/rules], correlation_interval_minutes: 5}
+context: {assets: config/assets.csv, identities: config/identities.csv, intel_dir: config/intel}
+agents:
+  daily_budget_usd: 50
+  run_budget_usd: 2
+model:
+  provider: anthropic_foundry
+  resource: ${FOUNDRY_RESOURCE}           # managed identity: AZURE_CLIENT_ID of the workload identity
+  fast: {deployment: meridian-fast}       # claude-sonnet-5-5, Hosted on Azure, Data Zone Standard (US) - see infra/azure variables
+  deep: {deployment: meridian-deep}       # (claude-haiku-4-5 is Global Standard only: cheaper triage, weaker residency)
+  pricing: {}                             # fill from your Foundry price sheet: {"claude-haiku-4-5": [in, out], ...}
+response:
+  dry_run: true
+  allowed_actions: [isolate_device, revoke_sessions, disable_user, block_indicator, soar_playbook]
+  actions: {block_indicator: {dry_run: false}}
+notify: {teams_workflow_url: "${TEAMS_WORKFLOW_URL:-}", console_url: "${MERIDIAN_PUBLIC_URL:-}"}
+lodestar: {url: "${LODESTAR_URL:-}", org: "${LODESTAR_ORG:-}", webhook_secret: "${LODESTAR_WEBHOOK_SECRET:-}"}
+security:
+  require_auth: true
+  oidc:
+    issuer: https://login.microsoftonline.com/${AZURE_TENANT_ID}/v2.0
+    client_id: ${OIDC_CLIENT_ID}
+    client_secret: ${OIDC_CLIENT_SECRET}
+    redirect_uri: ${MERIDIAN_PUBLIC_URL}/auth/callback
+    mcp_audience: ${MERIDIAN_MCP_AUDIENCE:-}
+    role_map: {}                          # {"<Entra group object id>": admin | responder | analyst | viewer}
+  mcp_scope_map: {}                       # {"<app role on the MERIDIAN MCP app registration>": [lake:read, context:read]}

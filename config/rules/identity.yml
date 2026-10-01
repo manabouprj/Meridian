@@ -1,0 +1,55 @@
+# Identity detections (OCSF 3002 Authentication / 3001 Account Change / 3005 User Access Management)
+title: High-risk sign-in succeeded
+id: mer-id-risky-signin
+status: stable
+level: high
+description: The identity provider rated a sign-in high risk and it still succeeded.
+tags: [attack.initial_access, attack.t1078]
+logsource: {category: authentication}
+detection:
+  selection:
+    status: Success
+    severity_id|gte: 4
+  condition: selection
+meridian: {entity: user, suppress_minutes: 120}
+---
+title: Member added to a privileged directory role
+id: mer-id-priv-role-add
+status: stable
+level: high
+description: Someone was added to a directory role. Validate against an approved change.
+tags: [attack.persistence, attack.privilege_escalation, attack.t1098.003]
+logsource: {category: auditlogs}
+detection:
+  selection:
+    OperationName|contains: ['add member to role', 'add eligible member to role', 'add scoped member to role']
+  condition: selection
+meridian: {entity: resource, suppress_minutes: 60}
+---
+title: User consented to an application (possible OAuth phishing)
+id: mer-id-oauth-consent
+status: stable
+level: medium
+description: A user or admin granted an application access to data - illicit consent grants bypass MFA.
+tags: [attack.credential_access, attack.t1528]
+logsource: {category: auditlogs}
+detection:
+  selection:
+    OperationName|contains: ['consent to application', 'add delegated permission grant', 'add app role assignment to service principal']
+  condition: selection
+meridian: {entity: user, suppress_minutes: 60}
+---
+title: Member added to a privileged Windows or Active Directory group
+id: mer-id-ad-priv-group-add
+status: stable
+level: high
+description: An account was added to Administrators, Domain Admins or another privileged group (Windows 4728 / 4732 / 4756). Validate against an approved change.
+tags: [attack.persistence, attack.privilege_escalation, attack.t1098]
+logsource: {category: auditlogs, product: windows}
+detection:
+  selection:
+    api_operation|contains: 'add member to security group'
+  privileged:
+    resource: ['administrators', 'domain admins', 'enterprise admins', 'schema admins', 'backup operators', 'account operators', 'server operators']
+  condition: selection and privileged
+meridian: {entity: user, suppress_minutes: 60}

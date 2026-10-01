@@ -1,0 +1,107 @@
+# Correlation rules - evaluated on the lake every few minutes (Sigma correlation semantics).
+title: Password spray from one source
+id: mer-cor-password-spray
+status: stable
+level: high
+description: One source failed to sign in to many different accounts.
+tags: [attack.credential_access, attack.t1110.003]
+logsource: {category: authentication}
+correlation:
+  type: value_count
+  group-by: [src_ip]
+  timespan: 30m
+  condition: {gte: 15, field: user}
+meridian:
+  entity: src_ip
+  suppress_minutes: 60
+  query: {classes: [3002], where: [{field: status, op: eq, value: Failure}]}
+---
+title: Brute force against one account
+id: mer-cor-brute-force
+status: stable
+level: medium
+description: Many failed sign-ins for one account in a short time.
+tags: [attack.credential_access, attack.t1110.001]
+logsource: {category: authentication}
+correlation:
+  type: event_count
+  group-by: [user]
+  timespan: 15m
+  condition: {gte: 25}
+meridian:
+  entity: user
+  query: {classes: [3002], where: [{field: status, op: eq, value: Failure}]}
+---
+title: Sign-ins from several countries in one hour
+id: mer-cor-multi-country
+status: stable
+level: high
+description: Successful sign-ins for one account from three or more countries within an hour (impossible travel or token theft).
+tags: [attack.initial_access, attack.t1078]
+logsource: {category: authentication}
+correlation:
+  type: value_count
+  group-by: [user]
+  timespan: 60m
+  condition: {gte: 3, field: src_country}
+meridian:
+  entity: user
+  query: {classes: [3002], where: [{field: status, op: eq, value: Success}, {field: src_country, op: not_null}]}
+---
+title: MFA push fatigue
+id: mer-cor-mfa-fatigue
+status: stable
+level: high
+description: Repeated MFA failures or denials for one account - an attacker with the password pushing prompts.
+tags: [attack.credential_access, attack.t1621]
+logsource: {category: authentication}
+correlation:
+  type: event_count
+  group-by: [user]
+  timespan: 10m
+  condition: {gte: 5}
+meridian:
+  entity: user
+  query: {classes: [3002], where: [{field: status, op: eq, value: Failure}, {field: message, op: contains_any, value: [mfa, multi-factor, "strong authentication"]}]}
+---
+title: Possible DNS tunnelling
+id: mer-cor-dns-tunnel
+status: stable
+level: medium
+description: One device queried an unusually large number of distinct names in a short time.
+tags: [attack.command_and_control, attack.t1071.004]
+logsource: {category: dns}
+correlation:
+  type: value_count
+  group-by: [device]
+  timespan: 15m
+  condition: {gte: 500, field: dns_query}
+meridian: {entity: device, query: {classes: [4003]}}
+---
+title: Mass file modification on one device
+id: mer-cor-mass-file-change
+status: stable
+level: critical
+description: Hundreds of file writes or renames on one device in five minutes - possible encryption in progress.
+tags: [attack.impact, attack.t1486]
+logsource: {category: file_event}
+correlation:
+  type: event_count
+  group-by: [device]
+  timespan: 5m
+  condition: {gte: 500}
+meridian: {entity: device, suppress_minutes: 30, query: {classes: [1001]}}
+---
+title: Port scan from one source
+id: mer-cor-port-scan
+status: stable
+level: medium
+description: One source connected to many destination ports in ten minutes.
+tags: [attack.discovery, attack.t1046]
+logsource: {category: firewall}
+correlation:
+  type: value_count
+  group-by: [src_ip]
+  timespan: 10m
+  condition: {gte: 100, field: dst_port}
+meridian: {entity: src_ip, query: {classes: [4001]}}

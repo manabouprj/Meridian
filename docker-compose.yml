@@ -1,0 +1,74 @@
+# Local / single-host deployment: API + ingestion worker + agent worker + scheduler + API collector + syslog receiver.
+#   docker compose run --rm api demo        # fictional data, offline
+#   docker compose up -d
+services:
+  api:
+    build: .
+    image: meridian:1.0.0
+    env_file: .env
+    command: ["serve", "--host", "0.0.0.0", "--port", "8090"]
+    ports: ["127.0.0.1:8090:8090"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8090/healthz')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    volumes: [meridian-data:/app/data, ./config:/app/config:ro]
+    read_only: true
+    tmpfs: [/tmp]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+    restart: unless-stopped
+  worker:
+    image: meridian:1.0.0
+    env_file: .env
+    command: ["worker"]
+    volumes: [meridian-data:/app/data, ./config:/app/config:ro]
+    read_only: true
+    tmpfs: [/tmp]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+    restart: unless-stopped
+  agents:
+    image: meridian:1.0.0
+    env_file: .env
+    command: ["agents"]
+    volumes: [meridian-data:/app/data, ./config:/app/config:ro]
+    read_only: true
+    tmpfs: [/tmp]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+    restart: unless-stopped
+  scheduler:
+    image: meridian:1.0.0
+    env_file: .env
+    command: ["scheduler"]
+    volumes: [meridian-data:/app/data, ./config:/app/config:ro]
+    read_only: true
+    tmpfs: [/tmp]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+    restart: unless-stopped
+  collector:
+    image: meridian:1.0.0
+    env_file: .env
+    command: ["collect"]
+    volumes: [meridian-data:/app/data, ./config:/app/config:ro]
+    read_only: true
+    tmpfs: [/tmp]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+    restart: unless-stopped
+  syslog:
+    image: meridian:1.0.0
+    env_file: .env
+    command: ["syslog", "--source", "syslog", "--port", "5514"]
+    ports: ["5514:5514/udp", "5514:5514/tcp"]
+    volumes: [meridian-data:/app/data, ./config:/app/config:ro]
+    read_only: true
+    tmpfs: [/tmp]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+    restart: unless-stopped
+volumes:
+  meridian-data:

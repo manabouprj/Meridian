@@ -1,0 +1,47 @@
+# MERIDIAN on AWS with Amazon Bedrock (values come from the Terraform outputs / ECS task env)
+org: {name: Your Organisation, industry: banking, crown_jewels: [Core banking, Payments gateway]}
+cloud: aws
+lake:
+  root: ${MERIDIAN_LAKE_ROOT}             # s3://<prefix>-lake-<sfx>
+  landing: ${MERIDIAN_LANDING_ROOT}       # s3://<prefix>-landing-<sfx>
+  query_engine: athena
+  athena: {database: "${MERIDIAN_ATHENA_DB}", table: events, workgroup: "${MERIDIAN_ATHENA_WG}"}
+queue: {type: sqs, url: "${MERIDIAN_QUEUE_URL}"}
+store: {url: ""}                          # built from MERIDIAN_DB_HOST + Aurora's managed secret (MERIDIAN_DB_CREDENTIALS)
+sources:
+  - {key: cloudtrail, format: cloudtrail, prefix: AWSLogs}     # org trail delivered (or replicated) into the landing bucket
+  - {key: securitylake, format: ocsf, prefix: securitylake}     # Security Lake subscriber copies (OCSF)
+  - {key: firewall, format: cef}
+  - {key: syslog, format: syslog, settings: {timezone: Asia/Dubai}}     # syslog receiver: Linux, network, appliances (CEF/LEEF auto)
+  - {key: windows, format: windows, settings: {timezone: "+04:00"}}  # NXLog / Fluent Bit / Winlogbeat -> landing or push
+  - {key: proxy, format: cef}
+  - {key: mde, format: mde}
+detections: {paths: [config/rules], correlation_interval_minutes: 5}
+context: {assets: config/assets.csv, identities: config/identities.csv, intel_dir: config/intel}
+agents:
+  daily_budget_usd: 50
+  run_budget_usd: 2
+model:
+  provider: anthropic_bedrock
+  region: ${BEDROCK_REGION}
+  fast: {model: "${BEDROCK_FAST_MODEL}"}   # inference profile id (Terraform: bedrock_fast_model)
+  deep: {model: "${BEDROCK_DEEP_MODEL}"}   # inference profile id (Terraform: bedrock_deep_model)
+  pricing: {}                             # fill from your Bedrock price sheet
+response:
+  dry_run: true
+  allowed_actions: [aws_deactivate_access_key, aws_quarantine_instance, block_indicator, revoke_sessions, soar_playbook]
+  actions:
+    block_indicator: {dry_run: false}
+    aws_quarantine_instance: {quarantine_security_group: sg-REPLACE}
+notify: {slack_webhook_url: "${SLACK_WEBHOOK_URL:-}", console_url: "${MERIDIAN_PUBLIC_URL:-}"}
+lodestar: {url: "${LODESTAR_URL:-}", org: "${LODESTAR_ORG:-}", webhook_secret: "${LODESTAR_WEBHOOK_SECRET:-}"}
+security:
+  require_auth: true
+  oidc:
+    issuer: ${OIDC_ISSUER}                # your IdP (Entra ID, Okta, Cognito user pool...)
+    client_id: ${OIDC_CLIENT_ID}
+    client_secret: ${OIDC_CLIENT_SECRET}
+    redirect_uri: ${MERIDIAN_PUBLIC_URL}/auth/callback
+    mcp_audience: ${MERIDIAN_MCP_AUDIENCE:-}
+    role_map: {}
+  mcp_scope_map: {}                       # AgentCore Gateway client credentials: {"<scope/group>": [lake:read, ...]}

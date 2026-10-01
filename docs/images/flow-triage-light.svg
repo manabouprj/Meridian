@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="636" viewBox="0 0 1280 636" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-labelledby="t d"><title id="t">Flow 2 - Alert triage, case and investigation</title><desc id="d">Every new alert is triaged by an agent that can only read through MCP; policy, not the model, closes alerts and opens or joins cases; serious cases go to the investigation agent.</desc>
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6e7781"/></marker><marker id="ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#cf222e"/></marker></defs>
+<rect width="1280" height="636" fill="#ffffff"/>
+<text x="32" y="40" font-size="20" font-weight="750" fill="#1f2328" text-anchor="start" xml:space="preserve">Flow 2 - Alert triage, case and investigation</text>
+<rect x="12.0" y="58" width="156" height="40" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<text x="90.0" y="78" font-size="12" font-weight="650" fill="#1f2328" text-anchor="middle" xml:space="preserve">Work queue</text>
+<line x1="90.0" y1="98" x2="90.0" y2="616" stroke="#d1d9e0" stroke-width="1.2" stroke-dasharray="4 4"/>
+<rect x="232.0" y="58" width="156" height="40" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<text x="310.0" y="78" font-size="12" font-weight="650" fill="#1f2328" text-anchor="middle" xml:space="preserve">Triage agent</text>
+<line x1="310.0" y1="98" x2="310.0" y2="616" stroke="#d1d9e0" stroke-width="1.2" stroke-dasharray="4 4"/>
+<rect x="452.0" y="58" width="156" height="40" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<text x="530.0" y="68" font-size="12" font-weight="650" fill="#1f2328" text-anchor="middle" xml:space="preserve">MCP servers</text>
+<text x="530.0" y="83" font-size="12" font-weight="650" fill="#1f2328" text-anchor="middle" xml:space="preserve">(lake, context)</text>
+<line x1="530.0" y1="98" x2="530.0" y2="616" stroke="#d1d9e0" stroke-width="1.2" stroke-dasharray="4 4"/>
+<rect x="672.0" y="58" width="156" height="40" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<text x="750.0" y="68" font-size="12" font-weight="650" fill="#1f2328" text-anchor="middle" xml:space="preserve">Model</text>
+<text x="750.0" y="83" font-size="12" font-weight="650" fill="#1f2328" text-anchor="middle" xml:space="preserve">(Foundry / Bedrock)</text>
+<line x1="750.0" y1="98" x2="750.0" y2="616" stroke="#d1d9e0" stroke-width="1.2" stroke-dasharray="4 4"/>
+<rect x="892.0" y="58" width="156" height="40" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<text x="970.0" y="78" font-size="12" font-weight="650" fill="#1f2328" text-anchor="middle" xml:space="preserve">Case store</text>
+<line x1="970.0" y1="98" x2="970.0" y2="616" stroke="#d1d9e0" stroke-width="1.2" stroke-dasharray="4 4"/>
+<rect x="1112.0" y="58" width="156" height="40" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<text x="1190.0" y="68" font-size="12" font-weight="650" fill="#1f2328" text-anchor="middle" xml:space="preserve">Investigation</text>
+<text x="1190.0" y="83" font-size="12" font-weight="650" fill="#1f2328" text-anchor="middle" xml:space="preserve">agent</text>
+<line x1="1190.0" y1="98" x2="1190.0" y2="616" stroke="#d1d9e0" stroke-width="1.2" stroke-dasharray="4 4"/>
+<path d="M90.0,128 L306.0,128" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<text x="200.0" y="121" font-size="12" font-weight="500" fill="#1f2328" text-anchor="middle" xml:space="preserve">lease 'triage' item (alert id)</text>
+<path d="M310.0,174 L746.0,174" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<text x="530.0" y="167" font-size="12" font-weight="500" fill="#1f2328" text-anchor="middle" xml:space="preserve">system prompt + alert (untrusted data marked) + tool list</text>
+<path d="M750.0,220 L314.0,220" fill="none" stroke="#6e7781" stroke-width="1.7" stroke-dasharray="6 4" marker-end="url(#ah)"/>
+<text x="530.0" y="213" font-size="12" font-weight="500" fill="#1f2328" text-anchor="middle" xml:space="preserve">tool_use: lookup_asset, related_alerts</text>
+<path d="M310.0,266 L526.0,266" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<text x="420.0" y="259" font-size="12" font-weight="500" fill="#1f2328" text-anchor="middle" xml:space="preserve">MCP tools/call with agent token (scopes: lake:read, context:read)</text>
+<path d="M530.0,312 L314.0,312" fill="none" stroke="#6e7781" stroke-width="1.7" stroke-dasharray="6 4" marker-end="url(#ah)"/>
+<text x="420.0" y="305" font-size="12" font-weight="500" fill="#1f2328" text-anchor="middle" xml:space="preserve">results (row-capped, query_id, UNTRUSTED notice)</text>
+<path d="M310.0,358 L746.0,358" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<text x="530.0" y="351" font-size="12" font-weight="500" fill="#1f2328" text-anchor="middle" xml:space="preserve">tool results</text>
+<path d="M750.0,404 L314.0,404" fill="none" stroke="#6e7781" stroke-width="1.7" stroke-dasharray="6 4" marker-end="url(#ah)"/>
+<text x="530.0" y="397" font-size="12" font-weight="500" fill="#1f2328" text-anchor="middle" xml:space="preserve">tool_use: submit_result {verdict, confidence, evidence}</text>
+<path d="M310.0,442 h40 v18 h-36" fill="none" stroke="#6e7781" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="358.0" y="454" font-size="12" font-weight="400" fill="#1f2328" text-anchor="start" xml:space="preserve">validate schema; policy decides (not the model)</text>
+<path d="M310.0,496 L966.0,496" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<text x="640.0" y="489" font-size="12" font-weight="500" fill="#1f2328" text-anchor="middle" xml:space="preserve">benign &gt;= 0.8 -&gt; close; else join / open case by shared entity</text>
+<path d="M970.0,542 L1186.0,542" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<text x="1080.0" y="535" font-size="12" font-weight="500" fill="#1f2328" text-anchor="middle" xml:space="preserve">sev &gt;= 4 or malicious -&gt; enqueue 'investigate'</text>
+<rect x="60" y="570" width="1160" height="30" rx="5" fill="#f6f8fa" stroke="#9a6700" stroke-width="1"/>
+<text x="640.0" y="590" font-size="12" font-weight="600" fill="#1f2328" text-anchor="middle" xml:space="preserve">Budget guard: over the daily model budget or model unavailable -&gt; deterministic analyst, labelled 'degraded'</text>
+</svg>

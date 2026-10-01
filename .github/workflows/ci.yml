@@ -1,0 +1,70 @@
+name: ci
+on:
+  push: {branches: [main]}
+  pull_request:
+permissions: {contents: read}
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy: {matrix: {python: ["3.11", "3.12"]}}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "${{ matrix.python }}", cache: pip}
+      - run: pip install -r requirements-dev.txt
+      - run: ruff check meridian tests
+      - run: pytest -q
+      - run: python -m meridian rules --check
+      - run: python -m meridian demo
+      - run: python scripts/check_hcl.py
+      - name: generated docs are up to date
+        run: |
+          python scripts/gen_reference_docs.py && python scripts/gen_mcp_docs.py && python scripts/gen_adx_schema.py
+          git diff --exit-code -- docs/design docs/MCP-TOOLS.md infra/azure/adx-schema.kql
+      - run: python scripts/cost_model.py
+  test-postgres:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env: {POSTGRES_USER: meridian, POSTGRES_PASSWORD: meridian-ci, POSTGRES_DB: meridian}
+        ports: ["5432:5432"]
+        options: --health-cmd pg_isready --health-interval 5s --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12", cache: pip}
+      - run: pip install -r requirements-dev.txt
+      - run: pytest -q
+        env: {MERIDIAN_TEST_PG: "postgresql+psycopg://meridian:meridian-ci@127.0.0.1:5432/meridian"}
+  lodestar-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with: {repository: manabouprj/Lodestar, path: lodestar}
+        continue-on-error: true            # private / unavailable LODESTAR repo: the job reports "skipped"
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12", cache: pip}
+      - run: pip install -r requirements-dev.txt
+      - run: pytest -q tests/test_lodestar_contract.py
+        env: {LODESTAR_PATH: "${{ github.workspace }}/lodestar"}
+  terraform:
+    runs-on: ubuntu-latest
+    strategy: {matrix: {cloud: [azure, aws]}}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+      - run: terraform fmt -check -recursive
+        working-directory: infra/${{ matrix.cloud }}
+      - run: terraform init -backend=false && terraform validate
+        working-directory: infra/${{ matrix.cloud }}
+      - run: terraform test        # offline plan with mocked providers (tests/plan.tftest.hcl)
+        working-directory: infra/${{ matrix.cloud }}
+  docker:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t meridian:ci .
+      - run: docker run --rm meridian:ci rules --check

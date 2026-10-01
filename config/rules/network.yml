@@ -1,0 +1,58 @@
+# Network, proxy, DNS and cross-source detections
+title: Threat-intelligence indicator observed
+id: mer-net-ioc-hit
+status: stable
+level: high
+description: An event matched an indicator from the configured threat-intelligence feeds at ingestion.
+tags: [attack.command_and_control, attack.t1071]
+logsource: {category: any}
+detection:
+  selection:
+    ioc_hits|exists: true
+  condition: selection
+meridian: {entity: device, suppress_minutes: 60}
+---
+title: Executable downloaded from a bare IP address
+id: mer-net-exe-from-ip
+status: stable
+level: high
+description: A script or executable was fetched over HTTP from an IP address rather than a domain.
+tags: [attack.command_and_control, attack.t1105]
+logsource: {category: proxy}
+detection:
+  selection:
+    c-uri|re: '^https?://\d{1,3}(\.\d{1,3}){3}(:\d+)?/.*\.(exe|dll|ps1|hta|vbs|scr|bat)(\?|$)'
+  condition: selection
+meridian: {entity: user, suppress_minutes: 60}
+---
+title: Remote administration port reachable from the internet
+id: mer-net-inbound-admin
+status: stable
+level: high
+description: Firewall allowed inbound RDP, SSH, SMB or WinRM from a public address.
+tags: [attack.initial_access, attack.t1133]
+logsource: {category: firewall}
+detection:
+  selection:
+    DestinationPort: [3389, 22, 445, 5985, 5986]
+    action: [allow, allowed, accept, permit]
+  private:
+    - SourceIp|cidr: 10.0.0.0/8
+    - SourceIp|cidr: 172.16.0.0/12
+    - SourceIp|cidr: 192.168.0.0/16
+    - SourceIp|cidr: 100.64.0.0/10
+  condition: selection and not private
+meridian: {entity: dst_ip, suppress_minutes: 240}
+---
+title: Security product detection (vendor alert)
+id: vendor-detection
+status: stable
+level: medium
+description: A detection raised by an integrated security product (EDR, e-mail, cloud). Severity follows the vendor.
+tags: [meridian.vendor]
+logsource: {category: detection}
+detection:
+  selection:
+    severity_id|gte: 3
+  condition: selection
+meridian: {entity: device, suppress_minutes: 60}

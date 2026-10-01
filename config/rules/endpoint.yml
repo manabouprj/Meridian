@@ -1,0 +1,153 @@
+# Endpoint detections (OCSF 1007 Process Activity / 1001 File System Activity). Sigma format.
+title: Encoded PowerShell command line
+id: mer-ep-encoded-powershell
+status: stable
+level: high
+description: PowerShell launched with an encoded command, a common way to hide payloads.
+tags: [attack.execution, attack.t1059.001]
+logsource: {category: process_creation, product: windows}
+detection:
+  selection_img:
+    Image|endswith: ['\powershell.exe', '\pwsh.exe']
+  selection_cli:
+    CommandLine|contains: [' -enc ', ' -encodedcommand ', ' -ec ', ' -e JAB', ' -e SQB']
+  condition: selection_img and selection_cli
+falsepositives: [Software deployment tools that wrap scripts in encoded commands]
+meridian: {entity: device, suppress_minutes: 60}
+---
+title: Credential dumping from LSASS
+id: mer-ep-lsass-dump
+status: stable
+level: critical
+description: A process dumped LSASS memory (procdump, comsvcs MiniDump, mimikatz) to steal credentials.
+tags: [attack.credential_access, attack.t1003.001]
+logsource: {category: process_creation, product: windows}
+detection:
+  procdump:
+    CommandLine|contains|all: ['-ma', 'lsass']
+  comsvcs:
+    CommandLine|contains|all: ['comsvcs', 'minidump']
+  mimikatz:
+    CommandLine|contains: ['sekurlsa::', 'lsadump::', 'kerberos::golden']
+  condition: 1 of them
+meridian: {entity: device, suppress_minutes: 240}
+---
+title: Shadow copies or backups deleted
+id: mer-ep-inhibit-recovery
+status: stable
+level: critical
+description: Deleting shadow copies or the backup catalogue is a near-universal ransomware precursor.
+tags: [attack.impact, attack.t1490]
+logsource: {category: process_creation, product: windows}
+detection:
+  vss:
+    CommandLine|contains|all: ['vssadmin', 'delete', 'shadows']
+  wmic:
+    CommandLine|contains|all: ['shadowcopy', 'delete']
+  wbadmin:
+    CommandLine|contains|all: ['wbadmin', 'delete', 'catalog']
+  bcdedit:
+    CommandLine|contains|all: ['bcdedit', 'recoveryenabled', 'no']
+  condition: 1 of them
+meridian: {entity: device, suppress_minutes: 240}
+---
+title: Office application spawned a shell
+id: mer-ep-office-child-shell
+status: stable
+level: high
+description: Word, Excel or Outlook started a command shell or script host - typical of malicious documents.
+tags: [attack.initial_access, attack.t1566.001, attack.execution, attack.t1204.002]
+logsource: {category: process_creation, product: windows}
+detection:
+  parent:
+    ParentImage|endswith: ['\winword.exe', '\excel.exe', '\powerpnt.exe', '\outlook.exe', '\onenote.exe']
+  child:
+    Image|endswith: ['\cmd.exe', '\powershell.exe', '\pwsh.exe', '\wscript.exe', '\cscript.exe', '\mshta.exe', '\rundll32.exe', '\regsvr32.exe']
+  condition: parent and child
+meridian: {entity: device, suppress_minutes: 120}
+---
+title: Living-off-the-land download (certutil / bitsadmin)
+id: mer-ep-lolbin-download
+status: stable
+level: high
+description: A signed Windows binary was used to download a file from the internet.
+tags: [attack.command_and_control, attack.t1105]
+logsource: {category: process_creation, product: windows}
+detection:
+  certutil:
+    CommandLine|contains|all: ['certutil', 'urlcache']
+  bits:
+    CommandLine|contains|all: ['bitsadmin', '/transfer']
+  condition: 1 of them
+meridian: {entity: device, suppress_minutes: 120}
+---
+title: Signed binary proxy execution of a script
+id: mer-ep-signed-proxy
+status: stable
+level: high
+description: rundll32, regsvr32 or mshta used to run remote or inline script content.
+tags: [attack.defense_evasion, attack.t1218]
+logsource: {category: process_creation, product: windows}
+detection:
+  regsvr32:
+    CommandLine|contains|all: ['regsvr32', 'scrobj.dll']
+  rundll32:
+    CommandLine|contains|all: ['rundll32', 'javascript:']
+  mshta:
+    CommandLine|contains: ['mshta http', 'mshta.exe http', 'mshta vbscript:', 'mshta javascript:']
+  condition: 1 of them
+meridian: {entity: device, suppress_minutes: 120}
+---
+title: Account added to local administrators
+id: mer-ep-local-admin-add
+status: stable
+level: medium
+description: A user was added to the local Administrators group from the command line.
+tags: [attack.persistence, attack.t1098, attack.t1136.001]
+logsource: {category: process_creation, product: windows}
+detection:
+  selection:
+    CommandLine|contains|all: ['localgroup', 'administrators', '/add']
+  condition: selection
+meridian: {entity: device, suppress_minutes: 240}
+---
+title: Scheduled task created to run a script host
+id: mer-ep-schtask-script
+status: stable
+level: medium
+description: A scheduled task was created that launches PowerShell, cmd or a script host - common persistence.
+tags: [attack.persistence, attack.t1053.005]
+logsource: {category: process_creation, product: windows}
+detection:
+  selection:
+    CommandLine|contains|all: ['schtasks', '/create']
+  payload:
+    CommandLine|contains: ['powershell', 'cmd /c', 'wscript', 'mshta', 'rundll32']
+  condition: selection and payload
+meridian: {entity: device, suppress_minutes: 240}
+---
+title: Ransom note written
+id: mer-ep-ransom-note
+status: stable
+level: critical
+description: A file with a typical ransom-note name was created.
+tags: [attack.impact, attack.t1486]
+logsource: {category: file_event, product: windows}
+detection:
+  selection:
+    TargetFilename|contains: ['readme_to_decrypt', 'how_to_decrypt', 'restore_files', 'decrypt_instructions', '_recover_files_']
+  condition: selection
+meridian: {entity: device, suppress_minutes: 240}
+---
+title: Windows event log cleared
+id: mer-ep-event-log-cleared
+status: stable
+level: high
+description: The Security log (event 1102) or another event log (System 104) was cleared - a common step to hide activity.
+tags: [attack.defense_evasion, attack.t1070.001]
+logsource: {category: auditlogs, product: windows}
+detection:
+  selection:
+    api_operation|contains: ['clear security log', 'clear event log']
+  condition: selection
+meridian: {entity: device, suppress_minutes: 60}

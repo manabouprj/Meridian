@@ -1,0 +1,666 @@
+{
+ "assumptions": {
+  "region_uplift": 1.15,
+  "parquet_ratio": 6.0,
+  "gzip_ratio": 5.0,
+  "hours": 730,
+  "s3_std": 0.023,
+  "s3_ia": 0.0125,
+  "s3_gir": 0.004,
+  "s3_put_per_1k": 0.005,
+  "fargate_vcpu_h": 0.03237984,
+  "fargate_gb_h": 0.00356004,
+  "aurora_acu_h": 0.12,
+  "aurora_gb": 0.1,
+  "aurora_io_month": {
+   "Small": 20,
+   "Medium": 50,
+   "Large": 150
+  },
+  "athena_tb": 5.0,
+  "athena_cap_month": 5256.0,
+  "vpce_h": 0.01,
+  "vpce_count": 10,
+  "azs": 3,
+  "nat_h": 0.045,
+  "alb_month": 45.0,
+  "cw_logs_gb": 0.5,
+  "platform_log_gb_day": {
+   "Small": 1,
+   "Medium": 2,
+   "Large": 5
+  },
+  "secrets_kms_sqs_month": 25.0,
+  "adls_hot": 0.0228,
+  "adls_cool": 0.0125,
+  "adls_cold": 0.0045,
+  "aca_vcpu_h": 0.0864,
+  "aca_gib_h": 0.0108,
+  "pg_storage_gb": 0.115,
+  "eh_tu_h": 0.03,
+  "eh_capture_tu_h": 0.1,
+  "eh_ingress_per_m": 0.028,
+  "events_per_gb": 1400000.0,
+  "pe_month": 7.3,
+  "pe_count": 5,
+  "pe_gb": 0.01,
+  "log_analytics_gb": 2.3,
+  "kv_eg_month": 15.0,
+  "haiku_in": 1.0,
+  "haiku_out": 5.0,
+  "sonnet_in": 2.0,
+  "sonnet_out": 10.0,
+  "model_plan": {
+   "Azure": {
+    "fast": "sonnet",
+    "factor": 1.1
+   },
+   "AWS": {
+    "fast": "haiku",
+    "factor": 1.0
+   }
+  },
+  "triage_tokens": [
+   25000,
+   1500
+  ],
+  "investigate_tokens": [
+   120000,
+   8000
+  ],
+  "hunt_tokens": [
+   150000,
+   10000
+  ],
+  "agent_queries_per_triage": 4,
+  "agent_queries_per_investigation": 20,
+  "agent_queries_per_hunt": 30,
+  "scan_fraction_as_built": 0.25,
+  "scan_fraction_optimised": 0.02,
+  "correlation_queries_day": 2016,
+  "correlation_scan_fraction": 0.004,
+  "sentinel_payg": 4.3,
+  "sentinel_lake_gb_month": 0.026,
+  "splunk_per_gb_day_year": [
+   600.0,
+   1500.0
+  ],
+  "fte_cost": 140000.0,
+  "analyst_hour": 45.0,
+  "minutes_saved_per_human_alert": 4.0,
+  "productivity_realisation": 0.5,
+  "growth": 0.2,
+  "price_escalation": 0.05,
+  "parallel_run_months": 9,
+  "hybrid_share": 0.65
+ },
+ "tiers": {
+  "Small": {
+   "gb_day": 50,
+   "aws": {
+    "Lake + landing storage (S3)": 60,
+    "Query engine (Athena)": 51,
+    "Compute (ECS Fargate, Graviton)": 182,
+    "Database (Aurora Serverless v2)": 230,
+    "Networking (endpoints, NAT, ALB)": 345,
+    "Logs, secrets, keys, queues": 46,
+    "AI models (Claude in Bedrock)": 377
+   },
+   "aws_as_built": {
+    "Lake + landing storage (S3)": 60,
+    "Query engine (Athena)": 508,
+    "Compute (ECS Fargate, Graviton)": 182,
+    "Database (Aurora Serverless v2)": 230,
+    "Networking (endpoints, NAT, ALB)": 345,
+    "Logs, secrets, keys, queues": 46,
+    "AI models (Claude in Bedrock)": 377
+   },
+   "azure": {
+    "Lake + landing storage (ADLS)": 39,
+    "Query engine (DuckDB / ADX)": 181,
+    "Ingestion (Event Hubs + Capture)": 222,
+    "Compute (Container Apps)": 522,
+    "Database (PostgreSQL Flexible, HA)": 316,
+    "Networking (private endpoints)": 52,
+    "Logs, Key Vault, Event Grid": 97,
+    "AI models (Claude in Foundry)": 737
+   },
+   "azure_as_built": {
+    "Lake + landing storage (ADLS)": 39,
+    "Query engine (DuckDB / ADX)": 725,
+    "Ingestion (Event Hubs + Capture)": 222,
+    "Compute (Container Apps)": 522,
+    "Database (PostgreSQL Flexible, HA)": 316,
+    "Networking (private endpoints)": 52,
+    "Logs, Key Vault, Event Grid": 97,
+    "AI models (Claude in Foundry)": 737
+   },
+   "sentinel": {
+    "Ingestion (commitment tier)": 4845,
+    "Retention 91-365 days": 60
+   },
+   "splunk_month": [
+    2500,
+    6250
+   ],
+   "tco": {
+    "Azure": {
+     "tier": "Small",
+     "cloud": "Azure",
+     "years": [
+      {
+       "year": 1,
+       "status_quo": 198860,
+       "hybrid": 372805,
+       "full": 550137
+      },
+      {
+       "year": 2,
+       "status_quo": 214164,
+       "hybrid": 263244,
+       "full": 311190
+      },
+      {
+       "year": 3,
+       "status_quo": 233446,
+       "hybrid": 275683,
+       "full": 317428
+      }
+     ],
+     "run_month": 2166,
+     "sentinel_month": 4905,
+     "soft_value_year": 82125,
+     "hybrid": {
+      "tco_3y": 911732,
+      "saving_3y": -265262,
+      "year1_extra": 173945,
+      "roi_3y_pct": -152,
+      "payback_months": null,
+      "saving_3y_with_soft": -142074
+     },
+     "full": {
+      "tco_3y": 1178755,
+      "saving_3y": -532285,
+      "year1_extra": 351277,
+      "roi_3y_pct": -152,
+      "payback_months": null,
+      "saving_3y_with_soft": -285910
+     },
+     "status_quo_3y": 646470
+    },
+    "AWS": {
+     "tier": "Small",
+     "cloud": "AWS",
+     "years": [
+      {
+       "year": 1,
+       "status_quo": 198860,
+       "hybrid": 364930,
+       "full": 539637
+      },
+      {
+       "year": 2,
+       "status_quo": 214164,
+       "hybrid": 253794,
+       "full": 298590
+      },
+      {
+       "year": 3,
+       "status_quo": 233446,
+       "hybrid": 264343,
+       "full": 302308
+      }
+     ],
+     "run_month": 1291,
+     "sentinel_month": 4905,
+     "soft_value_year": 82125,
+     "hybrid": {
+      "tco_3y": 883067,
+      "saving_3y": -236597,
+      "year1_extra": 166070,
+      "roi_3y_pct": -142,
+      "payback_months": null,
+      "saving_3y_with_soft": -113410
+     },
+     "full": {
+      "tco_3y": 1140535,
+      "saving_3y": -494065,
+      "year1_extra": 340777,
+      "roi_3y_pct": -145,
+      "payback_months": null,
+      "saving_3y_with_soft": -247690
+     },
+     "status_quo_3y": 646470
+    }
+   }
+  },
+  "Medium": {
+   "gb_day": 200,
+   "aws": {
+    "Lake + landing storage (S3)": 231,
+    "Query engine (Athena)": 465,
+    "Compute (ECS Fargate, Graviton)": 265,
+    "Database (Aurora Serverless v2)": 472,
+    "Networking (endpoints, NAT, ALB)": 355,
+    "Logs, secrets, keys, queues": 63,
+    "AI models (Claude in Bedrock)": 988
+   },
+   "aws_as_built": {
+    "Lake + landing storage (S3)": 231,
+    "Query engine (Athena)": 5279,
+    "Compute (ECS Fargate, Graviton)": 265,
+    "Database (Aurora Serverless v2)": 472,
+    "Networking (endpoints, NAT, ALB)": 355,
+    "Logs, secrets, keys, queues": 63,
+    "AI models (Claude in Bedrock)": 988
+   },
+   "azure": {
+    "Lake + landing storage (ADLS)": 157,
+    "Query engine (DuckDB / ADX)": 1265,
+    "Ingestion (Event Hubs + Capture)": 232,
+    "Compute (Container Apps)": 749,
+    "Database (PostgreSQL Flexible, HA)": 632,
+    "Networking (private endpoints)": 83,
+    "Logs, Key Vault, Event Grid": 176,
+    "AI models (Claude in Foundry)": 1945
+   },
+   "azure_as_built": {
+    "Lake + landing storage (ADLS)": 157,
+    "Query engine (DuckDB / ADX)": 2024,
+    "Ingestion (Event Hubs + Capture)": 232,
+    "Compute (Container Apps)": 749,
+    "Database (PostgreSQL Flexible, HA)": 632,
+    "Networking (private endpoints)": 83,
+    "Logs, Key Vault, Event Grid": 176,
+    "AI models (Claude in Foundry)": 1945
+   },
+   "sentinel": {
+    "Ingestion (commitment tier)": 16440,
+    "Retention 91-365 days": 238
+   },
+   "splunk_month": [
+    10000,
+    25000
+   ],
+   "tco": {
+    "Azure": {
+     "tier": "Medium",
+     "cloud": "Azure",
+     "years": [
+      {
+       "year": 1,
+       "status_quo": 480136,
+       "hybrid": 744418,
+       "full": 1032970
+      },
+      {
+       "year": 2,
+       "status_quo": 532171,
+       "hybrid": 508080,
+       "full": 495442
+      },
+      {
+       "year": 3,
+       "status_quo": 597736,
+       "hybrid": 545786,
+       "full": 510530
+      }
+     ],
+     "run_month": 5239,
+     "sentinel_month": 16678,
+     "soft_value_year": 219000,
+     "hybrid": {
+      "tco_3y": 1798284,
+      "saving_3y": -188241,
+      "year1_extra": 264282,
+      "roi_3y_pct": -71,
+      "payback_months": null,
+      "saving_3y_with_soft": 140259
+     },
+     "full": {
+      "tco_3y": 2038942,
+      "saving_3y": -428899,
+      "year1_extra": 552834,
+      "roi_3y_pct": -78,
+      "payback_months": null,
+      "saving_3y_with_soft": 228101
+     },
+     "status_quo_3y": 1610043
+    },
+    "AWS": {
+     "tier": "Medium",
+     "cloud": "AWS",
+     "years": [
+      {
+       "year": 1,
+       "status_quo": 480136,
+       "hybrid": 722818,
+       "full": 1004170
+      },
+      {
+       "year": 2,
+       "status_quo": 532171,
+       "hybrid": 482160,
+       "full": 460882
+      },
+      {
+       "year": 3,
+       "status_quo": 597736,
+       "hybrid": 514682,
+       "full": 469058
+      }
+     ],
+     "run_month": 2839,
+     "sentinel_month": 16678,
+     "soft_value_year": 219000,
+     "hybrid": {
+      "tco_3y": 1719660,
+      "saving_3y": -109617,
+      "year1_extra": 242682,
+      "roi_3y_pct": -45,
+      "payback_months": null,
+      "saving_3y_with_soft": 218883
+     },
+     "full": {
+      "tco_3y": 1934110,
+      "saving_3y": -324067,
+      "year1_extra": 524034,
+      "roi_3y_pct": -62,
+      "payback_months": null,
+      "saving_3y_with_soft": 332933
+     },
+     "status_quo_3y": 1610043
+    }
+   }
+  },
+  "Large": {
+   "gb_day": 1000,
+   "aws": {
+    "Lake + landing storage (S3)": 1129,
+    "Query engine (Athena)": 5453,
+    "Compute (ECS Fargate, Graviton)": 564,
+    "Database (Aurora Serverless v2)": 1013,
+    "Networking (endpoints, NAT, ALB)": 410,
+    "Logs, secrets, keys, queues": 115,
+    "AI models (Claude in Bedrock)": 2462
+   },
+   "aws_as_built": {
+    "Lake + landing storage (S3)": 1129,
+    "Query engine (Athena)": 6044,
+    "Compute (ECS Fargate, Graviton)": 564,
+    "Database (Aurora Serverless v2)": 1013,
+    "Networking (endpoints, NAT, ALB)": 410,
+    "Logs, secrets, keys, queues": 115,
+    "AI models (Claude in Bedrock)": 2462
+   },
+   "azure": {
+    "Lake + landing storage (ADLS)": 787,
+    "Query engine (DuckDB / ADX)": 6900,
+    "Ingestion (Event Hubs + Capture)": 941,
+    "Compute (Container Apps)": 1565,
+    "Database (PostgreSQL Flexible, HA)": 1331,
+    "Networking (private endpoints)": 249,
+    "Logs, Key Vault, Event Grid": 414,
+    "AI models (Claude in Foundry)": 4853
+   },
+   "azure_as_built": {
+    "Lake + landing storage (ADLS)": 787,
+    "Query engine (DuckDB / ADX)": 11040,
+    "Ingestion (Event Hubs + Capture)": 941,
+    "Compute (Container Apps)": 1565,
+    "Database (PostgreSQL Flexible, HA)": 1331,
+    "Networking (private endpoints)": 249,
+    "Logs, Key Vault, Event Grid": 414,
+    "AI models (Claude in Foundry)": 4853
+   },
+   "sentinel": {
+    "Ingestion (commitment tier)": 73800,
+    "Retention 91-365 days": 1192
+   },
+   "splunk_month": [
+    50000,
+    125000
+   ],
+   "tco": {
+    "Azure": {
+     "tier": "Large",
+     "cloud": "Azure",
+     "years": [
+      {
+       "year": 1,
+       "status_quo": 1319904,
+       "hybrid": 1545539,
+       "full": 1919408
+      },
+      {
+       "year": 2,
+       "status_quo": 1553879,
+       "hybrid": 1130418,
+       "full": 805376
+      },
+      {
+       "year": 3,
+       "status_quo": 1848688,
+       "hybrid": 1285885,
+       "full": 854451
+      }
+     ],
+     "run_month": 17040,
+     "sentinel_month": 74992,
+     "soft_value_year": 547500,
+     "hybrid": {
+      "tco_3y": 3961842,
+      "saving_3y": 760629,
+      "year1_extra": 225635,
+      "roi_3y_pct": 337,
+      "payback_months": 18.0,
+      "saving_3y_with_soft": 1581879
+     },
+     "full": {
+      "tco_3y": 3579235,
+      "saving_3y": 1143236,
+      "year1_extra": 599504,
+      "roi_3y_pct": 191,
+      "payback_months": 22.0,
+      "saving_3y_with_soft": 2785736
+     },
+     "status_quo_3y": 4722471
+    },
+    "AWS": {
+     "tier": "Large",
+     "cloud": "AWS",
+     "years": [
+      {
+       "year": 1,
+       "status_quo": 1319904,
+       "hybrid": 1492493,
+       "full": 1848680
+      },
+      {
+       "year": 2,
+       "status_quo": 1553879,
+       "hybrid": 1066763,
+       "full": 720502
+      },
+      {
+       "year": 3,
+       "status_quo": 1848688,
+       "hybrid": 1209499,
+       "full": 752603
+      }
+     ],
+     "run_month": 11146,
+     "sentinel_month": 74992,
+     "soft_value_year": 547500,
+     "hybrid": {
+      "tco_3y": 3768755,
+      "saving_3y": 953716,
+      "year1_extra": 172589,
+      "roi_3y_pct": 553,
+      "payback_months": 16.0,
+      "saving_3y_with_soft": 1774966
+     },
+     "full": {
+      "tco_3y": 3321785,
+      "saving_3y": 1400686,
+      "year1_extra": 528776,
+      "roi_3y_pct": 265,
+      "payback_months": 20.0,
+      "saving_3y_with_soft": 3043186
+     },
+     "status_quo_3y": 4722471
+    }
+   }
+  }
+ },
+ "breakeven": {
+  "Azure": [
+   {
+    "gb": 50,
+    "status_quo": 646470,
+    "hybrid": 911732,
+    "full": 1178755,
+    "full_saving": -532285,
+    "full_saving_with_soft": -285910
+   },
+   {
+    "gb": 100,
+    "status_quo": 1048958,
+    "hybrid": 1312436,
+    "full": 1588346,
+    "full_saving": -539388,
+    "full_saving_with_soft": -87700
+   },
+   {
+    "gb": 200,
+    "status_quo": 1610043,
+    "hybrid": 1798284,
+    "full": 2038942,
+    "full_saving": -428899,
+    "full_saving_with_soft": 228101
+   },
+   {
+    "gb": 300,
+    "status_quo": 2071603,
+    "hybrid": 2180204,
+    "full": 2356949,
+    "full_saving": -285346,
+    "full_saving_with_soft": 619931
+   },
+   {
+    "gb": 400,
+    "status_quo": 2494208,
+    "hybrid": 2494857,
+    "full": 2597319,
+    "full_saving": -103111,
+    "full_saving_with_soft": 978321
+   },
+   {
+    "gb": 500,
+    "status_quo": 2893875,
+    "hybrid": 2782120,
+    "full": 2808501,
+    "full_saving": 85374,
+    "full_saving_with_soft": 1303442
+   },
+   {
+    "gb": 750,
+    "status_quo": 3833768,
+    "hybrid": 3406790,
+    "full": 3231455,
+    "full_saving": 602313,
+    "full_saving_with_soft": 2068658
+   },
+   {
+    "gb": 1000,
+    "status_quo": 4722471,
+    "hybrid": 3961842,
+    "full": 3579235,
+    "full_saving": 1143236,
+    "full_saving_with_soft": 2785736
+   },
+   {
+    "gb": 1500,
+    "status_quo": 6453706,
+    "hybrid": 4918493,
+    "full": 4063158,
+    "full_saving": 2390548,
+    "full_saving_with_soft": 4854298
+   }
+  ],
+  "AWS": [
+   {
+    "gb": 50,
+    "status_quo": 646470,
+    "hybrid": 883067,
+    "full": 1140535,
+    "full_saving": -494065,
+    "full_saving_with_soft": -247690
+   },
+   {
+    "gb": 100,
+    "status_quo": 1048958,
+    "hybrid": 1258677,
+    "full": 1516667,
+    "full_saving": -467709,
+    "full_saving_with_soft": -16021
+   },
+   {
+    "gb": 200,
+    "status_quo": 1610043,
+    "hybrid": 1719660,
+    "full": 1934110,
+    "full_saving": -324067,
+    "full_saving_with_soft": 332933
+   },
+   {
+    "gb": 300,
+    "status_quo": 2071603,
+    "hybrid": 2048312,
+    "full": 2181093,
+    "full_saving": -109490,
+    "full_saving_with_soft": 795787
+   },
+   {
+    "gb": 400,
+    "status_quo": 2494208,
+    "hybrid": 2335414,
+    "full": 2384729,
+    "full_saving": 109479,
+    "full_saving_with_soft": 1190911
+   },
+   {
+    "gb": 500,
+    "status_quo": 2893875,
+    "hybrid": 2600924,
+    "full": 2566907,
+    "full_saving": 326968,
+    "full_saving_with_soft": 1545036
+   },
+   {
+    "gb": 750,
+    "status_quo": 3833768,
+    "hybrid": 3207051,
+    "full": 2965139,
+    "full_saving": 868629,
+    "full_saving_with_soft": 2334974
+   },
+   {
+    "gb": 1000,
+    "status_quo": 4722471,
+    "hybrid": 3768755,
+    "full": 3321785,
+    "full_saving": 1400686,
+    "full_saving_with_soft": 3043186
+   },
+   {
+    "gb": 1500,
+    "status_quo": 6453706,
+    "hybrid": 4695267,
+    "full": 3765523,
+    "full_saving": 2688183,
+    "full_saving_with_soft": 5151933
+   }
+  ]
+ }
+}

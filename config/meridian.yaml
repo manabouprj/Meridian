@@ -1,0 +1,126 @@
+# ---------------------------------------------------------------------------
+# MERIDIAN configuration. Secrets are NEVER literal here: use ${ENV_VAR} references (the loader refuses
+# literal values for secret-like keys). `meridian doctor` checks this file and the environment.
+# Cloud reference settings: config/examples/azure.yaml and config/examples/aws.yaml
+# ---------------------------------------------------------------------------
+org:
+  name: Your Organisation
+  industry: banking                        # used in agent instructions; any free text
+  crown_jewels: [Core banking, Payments gateway, Customer portal]
+
+cloud: local                               # local | azure | aws
+
+lake:
+  root: data/lake                          # s3://bucket/prefix  |  abfss://container@account.dfs.core.windows.net/prefix
+  landing: data/landing
+  query_engine: duckdb                     # duckdb | athena | adx
+  max_window_days: 400
+  # athena: {database: meridian, table: events, workgroup: meridian}
+  # adx:    {cluster_uri: "https://<cluster>.<region>.kusto.windows.net", database: meridian, table: MeridianEvents}
+
+queue:
+  type: local                              # local | sqs | azure
+  # sqs:   url: https://sqs.<region>.amazonaws.com/<account>/meridian-landing
+  # azure: account: <storage account>, name: meridian-landing, container: landing
+
+store:
+  url: ${MERIDIAN_DATABASE_URL:-}          # postgresql+psycopg://... in production; empty = local SQLite
+  ledger_days: 120                         # processed-batch ledger kept > landing expiry (90 d), then removed daily
+  work_days: 30                            # finished work items kept for troubleshooting
+
+# One entry per data source. Landing prefix = key (or `prefix`).
+# format = mapper: syslog | cef | leef | windows | mde | entra | cloudtrail | ocsf | json  (docs/ingestion/MERIDIAN-LOG-00.md)
+sources:
+  - {key: mde, format: mde}                                   # Defender XDR streaming API -> Event Hubs Capture / storage
+  - {key: entra, format: entra}                               # Entra ID sign-in + audit diagnostic settings
+  - {key: cloudtrail, format: cloudtrail}                     # AWS CloudTrail (S3 or Security Lake export)
+  - {key: firewall, format: cef}                              # Palo Alto / Fortinet / Check Point via syslog CEF
+  - {key: proxy, format: cef}                                 # Zscaler / Netskope NSS via syslog CEF
+  - {key: dns, format: ocsf}                                  # any OCSF producer (Infoblox, Route 53 via Security Lake, ...)
+  - {key: windows, format: windows, settings: {timezone: "+04:00"}}   # Security / Sysmon / PowerShell via NXLog, Winlogbeat, Fluent Bit, WEC
+  - {key: syslog, format: syslog, settings: {timezone: Asia/Dubai}}   # mixed syslog relay: Linux, network, appliances (CEF/LEEF auto-detected)
+  # - key: okta                                               # API pull (no agent): see meridian/ingest/pull.py
+  #   format: json
+  #   settings: {class_uid: 3002, field_map: {time: published, user: actor.alternateId, src_ip: client.ipAddress,
+  #              status: outcome.result, activity_name: eventType, src_country: client.geographicalContext.country}}
+  #   pull:
+  #     url: https://acme.okta.example/api/v1/logs
+  #     auth: {type: bearer, scheme: SSWS, token: ${MERIDIAN_OKTA_TOKEN}}
+  #     params: {since: "{cursor}", limit: "1000"}
+  #     cursor: {field: published, start_minutes: 60}
+  #     paginate: {type: link}
+  #     interval_minutes: 5
+  # - key: saas_audit                                         # anything else: generic JSON with a field map
+  #   format: json
+  #   settings: {class_uid: 6003, field_map: {time: ts, user: actor.email, api_operation: action, src_ip: ip}}
+
+detections:
+  paths: [config/rules]
+  disabled: []
+  correlation_interval_minutes: 5
+
+context:
+  assets: config/assets.csv                # same file as LODESTAR's CMDB export
+  identities: config/identities.csv
+  intel_dir: config/intel                  # *.csv (value,type,source,severity,expires), STIX 2.1 *.json, *.txt
+
+agents:
+  daily_budget_usd: 50                     # above this, triage continues in degraded (rules-based) mode
+  run_budget_usd: 2
+  policy:
+    auto_close_benign_min_confidence: 0.8
+    auto_close_max_severity: 2             # only low-severity rules may auto-close (rule severity, not the model's)
+    auto_close_crown_jewels: false         # alerts on crown-jewel assets always go to a human
+    case_min_severity: 3
+    investigate_min_severity: 4
+    case_window_hours: 24
+  limits: {max_rows: 200, max_window_minutes: 43200}
+
+# Model provider. scripted = offline deterministic analyst (demo, tests, degraded mode).
+model:
+  provider: scripted
+  # --- Microsoft Foundry (Claude in Foundry; managed identity) ---
+  # provider: anthropic_foundry
+  # resource: ${FOUNDRY_RESOURCE}
+  # fast: {deployment: claude-haiku-4-5}
+  # deep: {deployment: claude-sonnet-5-5}
+  # --- Amazon Bedrock (Claude via the Messages API; IAM role) ---
+  # provider: anthropic_bedrock
+  # region: us-east-1
+  # fast: {model: anthropic.claude-haiku-4-5}
+  # deep: {model: anthropic.claude-sonnet-5-5}
+  pricing: {}                              # {"<model or deployment>": [usd_per_mtok_in, usd_per_mtok_out]} from your price sheet
+
+response:
+  dry_run: true                            # nothing is executed until you set false (per action below)
+  allowed_actions: [isolate_device, revoke_sessions, disable_user, block_indicator, aws_deactivate_access_key,
+                    aws_quarantine_instance, soar_playbook]
+  approval_ttl_hours: 24
+  actions:
+    block_indicator: {dry_run: false, block_ttl_days: 30}   # MERIDIAN's own EDL: safe to enable from day one
+  #  isolate_device: {dry_run: false}
+  #  aws_quarantine_instance: {quarantine_security_group: sg-0123456789abcdef0}
+  #  soar_playbook: {soar_webhook_url: "${SOAR_WEBHOOK_URL}", soar_webhook_secret: "${SOAR_WEBHOOK_SECRET}"}
+
+notify:
+  slack_webhook_url: ${SLACK_WEBHOOK_URL:-}
+  teams_workflow_url: ${TEAMS_WORKFLOW_URL:-}
+  console_url: ${MERIDIAN_PUBLIC_URL:-http://127.0.0.1:8090}
+
+lodestar:                                  # optional: feed cases to LODESTAR's Today list and board reports
+  url: ${LODESTAR_URL:-}
+  org: ${LODESTAR_ORG:-}
+  webhook_secret: ${LODESTAR_WEBHOOK_SECRET:-}
+
+security:
+  require_auth: true
+  secure_cookies: true
+  oidc:
+    issuer: ${OIDC_ISSUER:-}
+    client_id: ${OIDC_CLIENT_ID:-}
+    client_secret: ${OIDC_CLIENT_SECRET:-}
+    redirect_uri: ${MERIDIAN_PUBLIC_URL:-}/auth/callback
+    audience: ${OIDC_AUDIENCE:-}
+    mcp_audience: ${MERIDIAN_MCP_AUDIENCE:-}
+    role_map: {}                           # {"<group id>": admin | responder | analyst | viewer}
+  mcp_scope_map: {}                        # {"<app role / group>": [lake:read, context:read, ...]} for Foundry / AgentCore callers

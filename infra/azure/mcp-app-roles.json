@@ -1,0 +1,46 @@
+[
+  {
+    "allowedMemberTypes": [
+      "Application",
+      "User"
+    ],
+    "description": "Query the MERIDIAN security lake (MCP lake server)",
+    "displayName": "Lake.Read",
+    "id": "8378faf3-6bae-5c62-8403-56c60d8c3159",
+    "isEnabled": true,
+    "value": "Lake.Read"
+  },
+  {
+    "allowedMemberTypes": [
+      "Application",
+      "User"
+    ],
+    "description": "Look up assets, identities, indicators and alerts (MCP context server)",
+    "displayName": "Context.Read",
+    "id": "377f824a-4b95-56ec-af16-4ff99063ca54",
+    "isEnabled": true,
+    "value": "Context.Read"
+  },
+  {
+    "allowedMemberTypes": [
+      "Application",
+      "User"
+    ],
+    "description": "Read cases and add case notes (MCP cases server)",
+    "displayName": "Cases.Write",
+    "id": "f12a4ffd-0a71-585a-842c-4f6cde6ff2bb",
+    "isEnabled": true,
+    "value": "Cases.Write"
+  },
+  {
+    "allowedMemberTypes": [
+      "Application",
+      "User"
+    ],
+    "description": "Request containment - creates a pending approval only (MCP response server)",
+    "displayName": "Response.Request",
+    "id": "b52257a2-c695-5f9b-af57-f5f606752b34",
+    "isEnabled": true,
+    "value": "Response.Request"
+  }
+]

@@ -1,0 +1,73 @@
+# AWS control-plane detections (OCSF 6003 API Activity / 3002 from CloudTrail)
+title: CloudTrail logging stopped or deleted
+id: mer-aws-cloudtrail-stopped
+status: stable
+level: critical
+description: Audit logging was disabled - attackers do this before acting.
+tags: [attack.defense_evasion, attack.t1562.008]
+logsource: {product: aws, service: cloudtrail}
+detection:
+  selection:
+    eventName: [StopLogging, DeleteTrail, UpdateTrail, PutEventSelectors]
+    status: Success
+  condition: selection
+meridian: {entity: cloud_account, suppress_minutes: 60}
+---
+title: AWS root account console login
+id: mer-aws-root-login
+status: stable
+level: high
+description: The root user signed in to the console. Root should be locked away.
+tags: [attack.privilege_escalation, attack.t1078.004]
+logsource: {product: aws, service: cloudtrail}
+detection:
+  selection:
+    eventName: ConsoleLogin
+    user: root
+  condition: selection
+meridian: {entity: cloud_account, suppress_minutes: 60}
+---
+title: AWS console login without MFA
+id: mer-aws-console-no-mfa
+status: stable
+level: medium
+description: An IAM user signed in to the console without MFA.
+tags: [attack.initial_access, attack.t1078.004]
+logsource: {product: aws, service: cloudtrail}
+detection:
+  selection:
+    eventName: ConsoleLogin
+    status: Success
+    mfa: 'false'
+  root:
+    user: root
+  condition: selection and not root
+meridian: {entity: user, suppress_minutes: 240}
+---
+title: S3 bucket exposure change
+id: mer-aws-s3-public
+status: stable
+level: high
+description: Bucket policy, ACL or public-access block changed - check for public exposure of data.
+tags: [attack.exfiltration, attack.t1530]
+logsource: {product: aws, service: cloudtrail}
+detection:
+  selection:
+    eventName: [PutBucketPolicy, PutBucketAcl, DeleteBucketPublicAccessBlock, DeletePublicAccessBlock, PutBucketPublicAccessBlock]
+    status: Success
+  condition: selection
+meridian: {entity: resource, suppress_minutes: 60}
+---
+title: Access key created for an IAM user
+id: mer-aws-access-key-created
+status: stable
+level: medium
+description: A long-lived access key was created; attackers create keys for persistence.
+tags: [attack.persistence, attack.t1098.001]
+logsource: {product: aws, service: cloudtrail}
+detection:
+  selection:
+    eventName: CreateAccessKey
+    status: Success
+  condition: selection
+meridian: {entity: resource, suppress_minutes: 60}

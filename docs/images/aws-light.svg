@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="900" viewBox="0 0 1280 900" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-labelledby="t d"><title id="t">MERIDIAN on Amazon Web Services + Amazon Bedrock</title><desc id="d">Deployment of MERIDIAN on Amazon Web Services + Amazon Bedrock: private networking, managed identities, landing and lake storage, queue-driven workers, PostgreSQL, model endpoint and the agent / approval path.</desc>
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6e7781"/></marker><marker id="ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#cf222e"/></marker></defs>
+<rect width="1280" height="900" fill="#ffffff"/>
+<text x="32" y="44" font-size="22" font-weight="750" fill="#1f2328" text-anchor="start" xml:space="preserve">MERIDIAN on Amazon Web Services + Amazon Bedrock</text>
+<text x="32" y="66" font-size="13" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">reference deployment - infra/aws (Terraform)</text>
+<rect x="24" y="86" width="1232" height="650" rx="8" fill="#ffffff" stroke="#d1d9e0" stroke-width="1" stroke-dasharray="6 4"/>
+<text x="40" y="108" font-size="13" font-weight="600" fill="#59636e" text-anchor="start" xml:space="preserve">Region A (data residency, e.g. me-central-1)</text>
+<rect x="40" y="120" width="860" height="600" rx="8" fill="#f6f8fa" stroke="#0969da" stroke-width="1" stroke-dasharray="4 3"/>
+<text x="56" y="142" font-size="13" font-weight="650" fill="#0969da" text-anchor="start" xml:space="preserve">VPC 10.70.0.0/16 (3 AZ private subnets, VPC endpoints)</text>
+<rect x="56" y="156" width="828" height="208" rx="8" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<text x="72" y="178" font-size="13" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">ECS cluster on Fargate (ARM64, private subnets)</text>
+<rect x="72" y="192" width="150" height="76" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="84" cy="209" r="4" fill="#9a6700"/>
+<text x="94" y="213" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">api</text>
+<text x="82" y="232" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">console, REST, MCP</text>
+<text x="82" y="249" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">2-4 replicas</text>
+<rect x="234" y="192" width="150" height="76" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="246" cy="209" r="4" fill="#9a6700"/>
+<text x="256" y="213" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">worker</text>
+<text x="244" y="232" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">ingestion + detection</text>
+<text x="244" y="249" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">scales on queue</text>
+<rect x="396" y="192" width="150" height="76" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="408" cy="209" r="4" fill="#9a6700"/>
+<text x="418" y="213" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">agents</text>
+<text x="406" y="232" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">triage / investigate</text>
+<text x="406" y="249" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">model + MCP</text>
+<rect x="558" y="192" width="150" height="76" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="570" cy="209" r="4" fill="#9a6700"/>
+<text x="580" y="213" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">scheduler</text>
+<text x="568" y="232" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">correlations, expiry</text>
+<text x="568" y="249" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">LODESTAR push</text>
+<rect x="720" y="192" width="150" height="76" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="732" cy="209" r="4" fill="#9a6700"/>
+<text x="742" y="213" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">syslog</text>
+<text x="730" y="232" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">CEF receiver</text>
+<text x="730" y="249" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">UDP/TCP 5514</text>
+<text x="72" y="292" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">Task roles (no keys): app = lake/landing/SQS/Athena; agents = + bedrock:InvokeModel on approved models; api = tag-scoped response</text>
+<text x="72" y="312" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">Internal ALB (TLS 1.3 policy) -&gt; your edge / SSO for users; add your own NLB to expose syslog on-premises</text>
+<text x="72" y="332" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">Secrets Manager (KMS) holds API keys, session, ingest, EDL, metrics, OIDC, LODESTAR secrets; Aurora manages its own</text>
+<rect x="56" y="380" width="828" height="200" rx="8" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<text x="72" y="402" font-size="13" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Data</text>
+<rect x="72" y="416" width="150" height="76" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="84" cy="433" r="4" fill="#0e7490"/>
+<text x="94" y="437" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">S3 landing</text>
+<text x="82" y="456" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">raw batches, 90 d</text>
+<text x="82" y="473" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">SSE-KMS, versioned</text>
+<rect x="234" y="416" width="150" height="76" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="246" cy="433" r="4" fill="#0e7490"/>
+<text x="256" y="437" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">S3 lake</text>
+<text x="244" y="456" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">Parquet, Object Lock</text>
+<text x="244" y="473" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">GOVERNANCE/COMPLIANCE</text>
+<rect x="396" y="416" width="150" height="76" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="408" cy="433" r="4" fill="#0e7490"/>
+<text x="418" y="437" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">SQS (+DLQ)</text>
+<text x="406" y="456" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">S3 ObjectCreated</text>
+<text x="406" y="473" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">-&gt; worker trigger</text>
+<rect x="558" y="416" width="150" height="76" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="570" cy="433" r="4" fill="#0e7490"/>
+<text x="580" y="437" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Aurora PG v2</text>
+<text x="568" y="456" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">2 instances, 35 d</text>
+<text x="568" y="473" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">managed secret</text>
+<rect x="720" y="416" width="150" height="76" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="732" cy="433" r="4" fill="#0e7490"/>
+<text x="742" y="437" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Glue + Athena</text>
+<text x="730" y="456" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">partition projection</text>
+<text x="730" y="473" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">100 GB/query cap</text>
+<text x="72" y="516" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">Org CloudTrail + Security Lake (OCSF) -&gt; S3; firewalls -&gt; syslog via NLB; SaaS -&gt; Firehose / HTTPS push</text>
+<text x="72" y="536" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">Lifecycle: lake Standard-IA 30 d -&gt; Glacier IR 180 d; landing expires 90 d</text>
+<text x="72" y="556" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">Platform logs in CloudWatch (30 d, KMS) - security telemetry never pays per-GB SIEM ingestion</text>
+<rect x="56" y="596" width="828" height="110" rx="8" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<text x="72" y="618" font-size="13" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Private connectivity</text>
+<text x="72" y="642" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">Gateway endpoint: S3.  Interface endpoints: SQS, Secrets Manager, Logs, ECR, STS, Athena, Glue, KMS, bedrock-runtime</text>
+<text x="72" y="659" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">NAT gateway (optional) only for vendor SaaS APIs; Bedrock is called in-region, inference routed globally</text>
+<text x="72" y="676" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">Security groups: app &lt;- VPC only; DB &lt;- app only; endpoints &lt;- app only</text>
+<rect x="916" y="120" width="324" height="250" rx="8" fill="#f6f8fa" stroke="#d1d9e0" stroke-width="1"/>
+<rect x="916" y="130" width="4" height="230" rx="2" fill="#8250df"/>
+<text x="932" y="144" font-size="14" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Model platform</text>
+<text x="932" y="168" font-size="12" font-weight="400" fill="#1f2328" text-anchor="start" xml:space="preserve">Amazon Bedrock, called in me-central-1</text>
+<text x="932" y="185" font-size="12" font-weight="400" fill="#1f2328" text-anchor="start" xml:space="preserve">bedrock-runtime VPC endpoint</text>
+<text x="932" y="202" font-size="12" font-weight="400" fill="#1f2328" text-anchor="start" xml:space="preserve">Claude via GLOBAL cross-region</text>
+<text x="932" y="219" font-size="12" font-weight="400" fill="#1f2328" text-anchor="start" xml:space="preserve">  inference profiles (only option</text>
+<text x="932" y="236" font-size="12" font-weight="400" fill="#1f2328" text-anchor="start" xml:space="preserve">  from UAE for Sonnet 5.5)</text>
+<text x="932" y="253" font-size="12" font-weight="400" fill="#1f2328" text-anchor="start" xml:space="preserve">fast: Haiku 4.5 / deep: Sonnet 5.5</text>
+<text x="932" y="270" font-size="12" font-weight="400" fill="#1f2328" text-anchor="start" xml:space="preserve">IAM: profile + model ARNs only</text>
+<text x="932" y="287" font-size="12" font-weight="400" fill="#1f2328" text-anchor="start" xml:space="preserve">AgentCore: not in UAE/Bahrain;</text>
+<text x="932" y="304" font-size="12" font-weight="400" fill="#1f2328" text-anchor="start" xml:space="preserve">  optional from another region</text>
+<rect x="916" y="390" width="324" height="330" rx="8" fill="#f6f8fa" stroke="#d1d9e0" stroke-width="1"/>
+<rect x="916" y="400" width="4" height="310" rx="2" fill="#cf222e"/>
+<text x="932" y="414" font-size="14" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">People and response</text>
+<text x="932" y="438" font-size="12" font-weight="400" fill="#1f2328" text-anchor="start" xml:space="preserve">SSO (OIDC): Entra ID / Okta / Cognito</text>
+<text x="932" y="455" font-size="12" font-weight="400" fill="#1f2328" text-anchor="start" xml:space="preserve">roles: viewer, analyst, responder, admin</text>
+<text x="932" y="472" font-size="12" font-weight="400" fill="#1f2328" text-anchor="start" xml:space="preserve">approvals: four-eyes, 24 h expiry</text>
+<text x="932" y="489" font-size="12" font-weight="400" fill="#1f2328" text-anchor="start" xml:space="preserve"></text>
+<text x="932" y="506" font-size="12" font-weight="400" fill="#1f2328" text-anchor="start" xml:space="preserve">Executed after approval (dry-run first):</text>
+<text x="932" y="523" font-size="12" font-weight="400" fill="#1f2328" text-anchor="start" xml:space="preserve">  IAM key deactivate, EC2 quarantine SG</text>
+<text x="932" y="540" font-size="12" font-weight="400" fill="#1f2328" text-anchor="start" xml:space="preserve">  EDL block list for firewalls / proxies</text>
+<text x="932" y="557" font-size="12" font-weight="400" fill="#1f2328" text-anchor="start" xml:space="preserve">  SOAR playbook (signed webhook)</text>
+<text x="932" y="574" font-size="12" font-weight="400" fill="#1f2328" text-anchor="start" xml:space="preserve"></text>
+<text x="932" y="591" font-size="12" font-weight="400" fill="#1f2328" text-anchor="start" xml:space="preserve">Teams / Slack: approval requests,</text>
+<text x="932" y="608" font-size="12" font-weight="400" fill="#1f2328" text-anchor="start" xml:space="preserve">critical cases; LODESTAR hand-off</text>
+<path d="M884,230 L914,230" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<path d="M884,470 L914,470" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<rect x="24" y="752" width="1232" height="126" rx="8" fill="#f6f8fa" stroke="#d1d9e0" stroke-width="1"/>
+<text x="40" y="776" font-size="14" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Data flow and cost posture</text>
+<text x="40" y="800" font-size="12" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">1. Telemetry lands as files (no per-GB SIEM ingestion licence)  2. Workers normalise, enrich, detect and write Parquet  3. Alerts -&gt; triage agent via MCP</text>
+<text x="40" y="817" font-size="12" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">4. Cases sev &gt;= 4 -&gt; investigation agent; containment is requested  5. Responder approves in the console / chat  6. Executor acts; everything is audit-chained</text>
+<text x="40" y="834" font-size="12" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">Model spend is bounded: per-run and daily budgets; when exceeded or the endpoint is down, triage degrades to the deterministic analyst (labelled).</text>
+</svg>

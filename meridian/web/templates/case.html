@@ -1,0 +1,23 @@
+{% extends "_base.html" %}{% block title %}{{ case.case_id }} · MERIDIAN{% endblock %}{% block body %}
+<p><a href="/">&larr; all cases</a></p>
+<h1 style="font-size:20px;margin:6px 0">{{ case.title }}</h1>
+<p><span class="sev s{{ case.severity }}">sev {{ case.severity }}</span> <span class="tag">{{ case.status }}</span>
+ <span class="tag">verdict: {{ case.verdict or "-" }}</span> <span class="tag">entity: {{ case.entity }}</span>
+ {% for m in case.mitre or [] %}<span class="tag">{{ m }}</span>{% endfor %}</p>
+<p>{{ case.summary }}</p>
+<h2>Approvals</h2>
+<div class="wrap"><table><tr><th>Action</th><th>Target</th><th>Status</th><th>Requested by</th><th>Decided by</th><th>Rationale</th><th></th></tr>
+{% for a in case.approvals %}<tr><td><b>{{ a.action }}</b></td><td>{{ a.target }}</td><td>{{ a.status }}</td><td class="muted">{{ a.requested_by }}</td><td class="muted">{{ a.decided_by or "-" }}</td><td>{{ a.rationale }}</td>
+<td>{% if a.status == "pending" and me.role in ("responder","admin") %}<button class="ok" onclick="decide('{{ a.approval_id }}','approve')">Approve</button> <button class="no" onclick="decide('{{ a.approval_id }}','reject')">Reject</button>{% endif %}</td></tr>
+{% else %}<tr><td colspan="7" class="muted">No containment requested.</td></tr>{% endfor %}</table></div>
+<h2>Notes</h2>
+{% for n in case.notes %}<div class="note"><div class="h">{{ n.created_at.strftime("%d %b %H:%M") }} · {{ n.author }} · {{ n.kind }}</div>{{ n.body }}
+{% if n.evidence %}<pre>{{ n.evidence|tojson(indent=1) }}</pre>{% endif %}</div>{% else %}<p class="muted">No notes.</p>{% endfor %}
+<h2>Alerts in this case</h2>
+<div class="wrap"><table><tr><th>Detection</th><th>Events</th><th>First seen</th><th>Verdict</th><th>Sample (untrusted telemetry)</th></tr>
+{% for a in case.alerts %}<tr><td>{{ a.title }}<div class="muted">{{ a.rule_id }}</div></td><td>{{ a.event_count }}</td><td class="muted">{{ a.first_seen.strftime("%d %b %H:%M") }}</td><td>{{ a.verdict or "-" }}</td>
+<td><pre>{{ (a.data.sample or [])[:3]|tojson(indent=1) }}</pre></td></tr>{% endfor %}</table></div>
+<h2>Agent runs</h2>
+<div class="wrap"><table><tr><th>Agent</th><th>Provider</th><th>Tool calls</th><th>Cost</th><th>Outcome</th></tr>
+{% for r in runs %}<tr><td>{{ r.agent }}</td><td>{{ r.provider }} <span class="muted">{{ r.model }}</span></td><td>{{ r.tool_calls }}</td><td>${{ "%.4f"|format(r.cost_usd or 0) }}</td><td>{{ r.outcome }}</td></tr>{% endfor %}</table></div>
+{% endblock %}

@@ -1,0 +1,11 @@
+output "resource_group" { value = azurerm_resource_group.rg.name }
+output "lake_account" { value = azurerm_storage_account.lake.name }
+output "lake_root" { value = "abfss://lake@${azurerm_storage_account.lake.name}.dfs.core.windows.net" }
+output "landing_root" { value = "abfss://landing@${azurerm_storage_account.lake.name}.dfs.core.windows.net" }
+output "eventhub_namespace" { value = azurerm_eventhub_namespace.ehn.name }
+output "foundry_resource" { value = azurerm_cognitive_account.foundry.custom_subdomain_name }
+output "key_vault" { value = azurerm_key_vault.kv.name }
+output "workload_identity_client_id" { value = azurerm_user_assigned_identity.app.client_id }
+output "api_fqdn" { value = azurerm_container_app.role["api"].ingress[0].fqdn }
+output "postgres_fqdn" { value = azurerm_postgresql_flexible_server.pg.fqdn }
+output "adx_uri" { value = var.enable_adx ? azurerm_kusto_cluster.adx[0].uri : null }

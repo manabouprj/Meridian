@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="544" viewBox="0 0 1280 544" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-labelledby="t d"><title id="t">Integration flow 2 - one incident, both products</title><desc id="d">A malicious case in MERIDIAN becomes a Today item in LODESTAR and leaves it when MERIDIAN resolves it.</desc>
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6e7781"/></marker><marker id="ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#cf222e"/></marker></defs>
+<rect width="1280" height="544" fill="#ffffff"/>
+<text x="32" y="40" font-size="20" font-weight="750" fill="#1f2328" text-anchor="start" xml:space="preserve">Integration flow 2 - one incident, both products</text>
+<rect x="12.0" y="58" width="156" height="40" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<text x="90.0" y="68" font-size="12" font-weight="650" fill="#1f2328" text-anchor="middle" xml:space="preserve">Analyst /</text>
+<text x="90.0" y="83" font-size="12" font-weight="650" fill="#1f2328" text-anchor="middle" xml:space="preserve">responder</text>
+<line x1="90.0" y1="98" x2="90.0" y2="524" stroke="#d1d9e0" stroke-width="1.2" stroke-dasharray="4 4"/>
+<rect x="378.6666666666667" y="58" width="156" height="40" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<text x="456.6666666666667" y="78" font-size="12" font-weight="650" fill="#1f2328" text-anchor="middle" xml:space="preserve">MERIDIAN</text>
+<line x1="456.6666666666667" y1="98" x2="456.6666666666667" y2="524" stroke="#d1d9e0" stroke-width="1.2" stroke-dasharray="4 4"/>
+<rect x="745.3333333333334" y="58" width="156" height="40" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<text x="823.3333333333334" y="78" font-size="12" font-weight="650" fill="#1f2328" text-anchor="middle" xml:space="preserve">LODESTAR</text>
+<line x1="823.3333333333334" y1="98" x2="823.3333333333334" y2="524" stroke="#d1d9e0" stroke-width="1.2" stroke-dasharray="4 4"/>
+<rect x="1112.0" y="58" width="156" height="40" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<text x="1190.0" y="78" font-size="12" font-weight="650" fill="#1f2328" text-anchor="middle" xml:space="preserve">CISO</text>
+<line x1="1190.0" y1="98" x2="1190.0" y2="524" stroke="#d1d9e0" stroke-width="1.2" stroke-dasharray="4 4"/>
+<path d="M456.6666666666667,120 h40 v18 h-36" fill="none" stroke="#6e7781" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="504.6666666666667" y="132" font-size="12" font-weight="400" fill="#1f2328" text-anchor="start" xml:space="preserve">alerts -&gt; triage -&gt; case (malicious) on ws-0142 + fs-01</text>
+<path d="M456.6666666666667,174 L819.3333333333334,174" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<text x="640.0" y="167" font-size="12" font-weight="500" fill="#1f2328" text-anchor="middle" xml:space="preserve">finding: critical, open, asset = fs-01 (most critical), actively_exploited_in_env = true</text>
+<path d="M823.3333333333334,212 h40 v18 h-36" fill="none" stroke="#6e7781" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="871.3333333333334" y="224" font-size="12" font-weight="400" fill="#1f2328" text-anchor="start" xml:space="preserve">LRS: severity + active exploitation + business-critical asset -&gt; TODAY</text>
+<path d="M823.3333333333334,266 L1186.0,266" fill="none" stroke="#cf222e" stroke-width="1.7" marker-end="url(#ahr)"/>
+<text x="1006.6666666666667" y="259" font-size="12" font-weight="500" fill="#cf222e" text-anchor="middle" xml:space="preserve">Today list / digest: 'why' = active exploitation, business-critical asset</text>
+<path d="M90.0,312 L452.6666666666667,312" fill="none" stroke="#cf222e" stroke-width="1.7" marker-end="url(#ahr)"/>
+<text x="273.33333333333337" y="305" font-size="12" font-weight="500" fill="#cf222e" text-anchor="middle" xml:space="preserve">approve isolate_device + revoke_sessions (four-eyes)</text>
+<path d="M456.6666666666667,358 L819.3333333333334,358" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<text x="640.0" y="351" font-size="12" font-weight="500" fill="#1f2328" text-anchor="middle" xml:space="preserve">next push: status in_progress (contained)</text>
+<path d="M90.0,404 L452.6666666666667,404" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<text x="273.33333333333337" y="397" font-size="12" font-weight="500" fill="#1f2328" text-anchor="middle" xml:space="preserve">close case: verdict malicious, resolved</text>
+<path d="M456.6666666666667,450 L819.3333333333334,450" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<text x="640.0" y="443" font-size="12" font-weight="500" fill="#1f2328" text-anchor="middle" xml:space="preserve">next push: status resolved, actively_exploited_in_env = false</text>
+<path d="M823.3333333333334,496 L1186.0,496" fill="none" stroke="#cf222e" stroke-width="1.7" marker-end="url(#ahr)"/>
+<text x="1006.6666666666667" y="489" font-size="12" font-weight="500" fill="#cf222e" text-anchor="middle" xml:space="preserve">item leaves Today; MTTD / MTTR KRIs and board report updated</text>
+</svg>

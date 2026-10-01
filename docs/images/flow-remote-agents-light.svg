@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="544" viewBox="0 0 1280 544" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-labelledby="t d"><title id="t">Flow 4 - Managed agent option: Foundry Agent Service / AgentCore Gateway calling MERIDIAN MCP</title><desc id="d">When agents run in Microsoft Foundry Agent Service or behind Amazon Bedrock AgentCore Gateway, they reach MERIDIAN's MCP servers over private networking with OAuth tokens; MERIDIAN re-checks scopes and limits.</desc>
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6e7781"/></marker><marker id="ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#cf222e"/></marker></defs>
+<rect width="1280" height="544" fill="#ffffff"/>
+<text x="32" y="40" font-size="20" font-weight="750" fill="#1f2328" text-anchor="start" xml:space="preserve">Flow 4 - Managed agent option: Foundry Agent Service / AgentCore Gateway calling MERIDIAN MCP</text>
+<rect x="12.0" y="58" width="156" height="40" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<text x="90.0" y="68" font-size="12" font-weight="650" fill="#1f2328" text-anchor="middle" xml:space="preserve">Foundry Agent</text>
+<text x="90.0" y="83" font-size="12" font-weight="650" fill="#1f2328" text-anchor="middle" xml:space="preserve">Service / AgentCore</text>
+<line x1="90.0" y1="98" x2="90.0" y2="524" stroke="#d1d9e0" stroke-width="1.2" stroke-dasharray="4 4"/>
+<rect x="287.0" y="58" width="156" height="40" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<text x="365.0" y="68" font-size="12" font-weight="650" fill="#1f2328" text-anchor="middle" xml:space="preserve">Toolbox /</text>
+<text x="365.0" y="83" font-size="12" font-weight="650" fill="#1f2328" text-anchor="middle" xml:space="preserve">Gateway + Policy</text>
+<line x1="365.0" y1="98" x2="365.0" y2="524" stroke="#d1d9e0" stroke-width="1.2" stroke-dasharray="4 4"/>
+<rect x="562.0" y="58" width="156" height="40" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<text x="640.0" y="68" font-size="12" font-weight="650" fill="#1f2328" text-anchor="middle" xml:space="preserve">MERIDIAN /mcp/*</text>
+<text x="640.0" y="83" font-size="12" font-weight="650" fill="#1f2328" text-anchor="middle" xml:space="preserve">(bearer gate)</text>
+<line x1="640.0" y1="98" x2="640.0" y2="524" stroke="#d1d9e0" stroke-width="1.2" stroke-dasharray="4 4"/>
+<rect x="837.0" y="58" width="156" height="40" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<text x="915.0" y="68" font-size="12" font-weight="650" fill="#1f2328" text-anchor="middle" xml:space="preserve">Tool code</text>
+<text x="915.0" y="83" font-size="12" font-weight="650" fill="#1f2328" text-anchor="middle" xml:space="preserve">(scope re-check)</text>
+<line x1="915.0" y1="98" x2="915.0" y2="524" stroke="#d1d9e0" stroke-width="1.2" stroke-dasharray="4 4"/>
+<rect x="1112.0" y="58" width="156" height="40" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<text x="1190.0" y="78" font-size="12" font-weight="650" fill="#1f2328" text-anchor="middle" xml:space="preserve">Lake / store</text>
+<line x1="1190.0" y1="98" x2="1190.0" y2="524" stroke="#d1d9e0" stroke-width="1.2" stroke-dasharray="4 4"/>
+<path d="M90.0,128 L361.0,128" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<text x="227.5" y="121" font-size="12" font-weight="500" fill="#1f2328" text-anchor="middle" xml:space="preserve">agent invokes tool lake.search_events</text>
+<path d="M365.0,166 h40 v18 h-36" fill="none" stroke="#6e7781" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="413.0" y="178" font-size="12" font-weight="400" fill="#1f2328" text-anchor="start" xml:space="preserve">Foundry: allowed_tools + require_approval | AgentCore: Cedar default-deny</text>
+<path d="M365.0,220 L636.0,220" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<text x="502.5" y="213" font-size="12" font-weight="500" fill="#1f2328" text-anchor="middle" xml:space="preserve">streamable HTTP POST + OAuth / Entra token (managed identity)</text>
+<path d="M640.0,258 h40 v18 h-36" fill="none" stroke="#6e7781" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="688.0" y="270" font-size="12" font-weight="400" fill="#1f2328" text-anchor="start" xml:space="preserve">verify JWT (issuer, audience, expiry) -&gt; roles -&gt; scopes (mcp_scope_map)</text>
+<path d="M640.0,312 L911.0,312" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<text x="777.5" y="305" font-size="12" font-weight="500" fill="#1f2328" text-anchor="middle" xml:space="preserve">caller bound; 403 if the server's scope is missing</text>
+<path d="M915.0,358 L1186.0,358" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<text x="1052.5" y="351" font-size="12" font-weight="500" fill="#1f2328" text-anchor="middle" xml:space="preserve">compiled, parameterised query (row / time limits)</text>
+<path d="M1190.0,404 L919.0,404" fill="none" stroke="#6e7781" stroke-width="1.7" stroke-dasharray="6 4" marker-end="url(#ah)"/>
+<text x="1052.5" y="397" font-size="12" font-weight="500" fill="#1f2328" text-anchor="middle" xml:space="preserve">rows</text>
+<path d="M915.0,450 L94.0,450" fill="none" stroke="#6e7781" stroke-width="1.7" stroke-dasharray="6 4" marker-end="url(#ah)"/>
+<text x="502.5" y="443" font-size="12" font-weight="500" fill="#1f2328" text-anchor="middle" xml:space="preserve">structured result + UNTRUSTED notice; audit 'tool:*' entry</text>
+<rect x="60" y="478" width="1160" height="30" rx="5" fill="#f6f8fa" stroke="#9a6700" stroke-width="1"/>
+<text x="640.0" y="498" font-size="12" font-weight="600" fill="#1f2328" text-anchor="middle" xml:space="preserve">Response tools stay request-only: approval still happens in MERIDIAN with a human</text>
+</svg>

@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="900" viewBox="0 0 1280 900" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-labelledby="t d"><title id="t">MERIDIAN on Microsoft Azure + Microsoft Foundry</title><desc id="d">Deployment of MERIDIAN on Microsoft Azure + Microsoft Foundry: private networking, managed identities, landing and lake storage, queue-driven workers, PostgreSQL, model endpoint and the agent / approval path.</desc>
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6e7781"/></marker><marker id="ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#cf222e"/></marker></defs>
+<rect width="1280" height="900" fill="#ffffff"/>
+<text x="32" y="44" font-size="22" font-weight="750" fill="#1f2328" text-anchor="start" xml:space="preserve">MERIDIAN on Microsoft Azure + Microsoft Foundry</text>
+<text x="32" y="66" font-size="13" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">reference deployment - infra/azure (Terraform)</text>
+<rect x="24" y="86" width="1232" height="650" rx="8" fill="#ffffff" stroke="#d1d9e0" stroke-width="1" stroke-dasharray="6 4"/>
+<text x="40" y="108" font-size="13" font-weight="600" fill="#59636e" text-anchor="start" xml:space="preserve">Region A (data residency, e.g. UAE North)</text>
+<rect x="40" y="120" width="860" height="600" rx="8" fill="#f6f8fa" stroke="#0969da" stroke-width="1" stroke-dasharray="4 3"/>
+<text x="56" y="142" font-size="13" font-weight="650" fill="#0969da" text-anchor="start" xml:space="preserve">VNet 10.60.0.0/16 (private endpoints, no public data plane)</text>
+<rect x="56" y="156" width="828" height="208" rx="8" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<text x="72" y="178" font-size="13" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Container Apps environment (internal, zone-redundant)</text>
+<rect x="72" y="192" width="150" height="76" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="84" cy="209" r="4" fill="#9a6700"/>
+<text x="94" y="213" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">api</text>
+<text x="82" y="232" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">console, REST, MCP</text>
+<text x="82" y="249" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">2-4 replicas</text>
+<rect x="234" y="192" width="150" height="76" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="246" cy="209" r="4" fill="#9a6700"/>
+<text x="256" y="213" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">worker</text>
+<text x="244" y="232" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">ingestion + detection</text>
+<text x="244" y="249" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">scales on queue</text>
+<rect x="396" y="192" width="150" height="76" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="408" cy="209" r="4" fill="#9a6700"/>
+<text x="418" y="213" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">agents</text>
+<text x="406" y="232" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">triage / investigate</text>
+<text x="406" y="249" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">model + MCP</text>
+<rect x="558" y="192" width="150" height="76" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="570" cy="209" r="4" fill="#9a6700"/>
+<text x="580" y="213" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">scheduler</text>
+<text x="568" y="232" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">correlations, expiry</text>
+<text x="568" y="249" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">LODESTAR push</text>
+<rect x="720" y="192" width="150" height="76" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="732" cy="209" r="4" fill="#9a6700"/>
+<text x="742" y="213" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">syslog</text>
+<text x="730" y="232" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">CEF receiver</text>
+<text x="730" y="249" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">(VM / ACI on VNet)</text>
+<text x="72" y="292" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">User-assigned managed identity (no keys): Blob Data Contributor, Queue Processor, Key Vault Secrets User, Azure AI User</text>
+<text x="72" y="312" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">Internal ingress -&gt; Application Gateway WAF / Front Door Premium (Private Link) for users</text>
+<text x="72" y="332" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">Key Vault (RBAC, purge protection) holds API keys, session, ingest, EDL, metrics, OIDC, LODESTAR secrets</text>
+<rect x="56" y="380" width="828" height="200" rx="8" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<text x="72" y="402" font-size="13" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Data</text>
+<rect x="72" y="416" width="150" height="76" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="84" cy="433" r="4" fill="#0e7490"/>
+<text x="94" y="437" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Event Hubs</text>
+<text x="82" y="456" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">mde / entra / activity hubs</text>
+<text x="82" y="473" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">Capture -&gt; Avro -&gt; landing</text>
+<rect x="234" y="416" width="150" height="76" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="246" cy="433" r="4" fill="#0e7490"/>
+<text x="256" y="437" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">ADLS Gen2</text>
+<text x="244" y="456" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">landing (90 d) + lake</text>
+<text x="244" y="473" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">WORM immutability 365 d</text>
+<rect x="396" y="416" width="150" height="76" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="408" cy="433" r="4" fill="#0e7490"/>
+<text x="418" y="437" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Storage Queue</text>
+<text x="406" y="456" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">Event Grid BlobCreated</text>
+<text x="406" y="473" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">-&gt; worker trigger</text>
+<rect x="558" y="416" width="150" height="76" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="570" cy="433" r="4" fill="#0e7490"/>
+<text x="580" y="437" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">PostgreSQL Flex</text>
+<text x="568" y="456" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">zone-redundant HA</text>
+<text x="568" y="473" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">35 d PITR, geo backup</text>
+<rect x="720" y="416" width="150" height="76" rx="6" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<circle cx="732" cy="433" r="4" fill="#0e7490"/>
+<text x="742" y="437" font-size="12.5" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">ADX (optional)</text>
+<text x="730" y="456" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">KQL over the lake</text>
+<text x="730" y="473" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">large estates</text>
+<text x="72" y="516" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">Defender XDR streaming API, Entra diagnostic settings and Azure Activity -&gt; Event Hubs; firewalls -&gt; syslog; others -&gt; HTTPS push</text>
+<text x="72" y="536" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">Lifecycle: lake cool 30 d -&gt; cold 90 d -&gt; archive 400 d</text>
+<text x="72" y="556" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">Platform logs only in Log Analytics (2 GB/day cap) - security telemetry never pays per-GB SIEM ingestion</text>
+<rect x="56" y="596" width="828" height="110" rx="8" fill="#eef1f4" stroke="#d1d9e0" stroke-width="1"/>
+<text x="72" y="618" font-size="13" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Private connectivity</text>
+<text x="72" y="642" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">Private endpoints: blob, dfs, queue, Key Vault, Foundry (services.ai.azure.com / cognitiveservices)</text>
+<text x="72" y="659" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">Private DNS zones linked to the VNet; storage, Key Vault and Foundry deny public network access</text>
+<text x="72" y="676" font-size="11.5" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">Egress to vendor APIs (EDR, IdP, intel) through your firewall / NAT; inference is processed in the US data zone</text>
+<rect x="916" y="120" width="324" height="250" rx="8" fill="#f6f8fa" stroke="#d1d9e0" stroke-width="1"/>
+<rect x="916" y="130" width="4" height="230" rx="2" fill="#8250df"/>
+<text x="932" y="144" font-size="14" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Model platform</text>
+<text x="932" y="168" font-size="12" font-weight="400" fill="#1f2328" text-anchor="start" xml:space="preserve">Foundry account in a US region (eastus2)</text>
+<text x="932" y="185" font-size="12" font-weight="400" fill="#1f2328" text-anchor="start" xml:space="preserve">Claude is not offered in UAE North</text>
+<text x="932" y="202" font-size="12" font-weight="400" fill="#1f2328" text-anchor="start" xml:space="preserve">meridian-fast / meridian-deep:</text>
+<text x="932" y="219" font-size="12" font-weight="400" fill="#1f2328" text-anchor="start" xml:space="preserve">  claude-sonnet-5-5, Hosted on Azure</text>
+<text x="932" y="236" font-size="12" font-weight="400" fill="#1f2328" text-anchor="start" xml:space="preserve">  Data Zone Standard (US) - pinned</text>
+<text x="932" y="253" font-size="12" font-weight="400" fill="#1f2328" text-anchor="start" xml:space="preserve">local auth disabled -&gt; Entra only</text>
+<text x="932" y="270" font-size="12" font-weight="400" fill="#1f2328" text-anchor="start" xml:space="preserve">private endpoint in the UAE VNet</text>
+<text x="932" y="287" font-size="12" font-weight="400" fill="#1f2328" text-anchor="start" xml:space="preserve">Agent Service (optional):</text>
+<text x="932" y="304" font-size="12" font-weight="400" fill="#1f2328" text-anchor="start" xml:space="preserve">  MCP tool -&gt; /mcp/&lt;server&gt;/</text>
+<rect x="916" y="390" width="324" height="330" rx="8" fill="#f6f8fa" stroke="#d1d9e0" stroke-width="1"/>
+<rect x="916" y="400" width="4" height="310" rx="2" fill="#cf222e"/>
+<text x="932" y="414" font-size="14" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">People and response</text>
+<text x="932" y="438" font-size="12" font-weight="400" fill="#1f2328" text-anchor="start" xml:space="preserve">SSO (OIDC): Entra ID / Okta</text>
+<text x="932" y="455" font-size="12" font-weight="400" fill="#1f2328" text-anchor="start" xml:space="preserve">roles: viewer, analyst, responder, admin</text>
+<text x="932" y="472" font-size="12" font-weight="400" fill="#1f2328" text-anchor="start" xml:space="preserve">approvals: four-eyes, 24 h expiry</text>
+<text x="932" y="489" font-size="12" font-weight="400" fill="#1f2328" text-anchor="start" xml:space="preserve"></text>
+<text x="932" y="506" font-size="12" font-weight="400" fill="#1f2328" text-anchor="start" xml:space="preserve">Executed after approval (dry-run first):</text>
+<text x="932" y="523" font-size="12" font-weight="400" fill="#1f2328" text-anchor="start" xml:space="preserve">  Defender isolate, Entra revoke / disable</text>
+<text x="932" y="540" font-size="12" font-weight="400" fill="#1f2328" text-anchor="start" xml:space="preserve">  EDL block list for firewalls / proxies</text>
+<text x="932" y="557" font-size="12" font-weight="400" fill="#1f2328" text-anchor="start" xml:space="preserve">  SOAR playbook (signed webhook)</text>
+<text x="932" y="574" font-size="12" font-weight="400" fill="#1f2328" text-anchor="start" xml:space="preserve"></text>
+<text x="932" y="591" font-size="12" font-weight="400" fill="#1f2328" text-anchor="start" xml:space="preserve">Teams / Slack: approval requests,</text>
+<text x="932" y="608" font-size="12" font-weight="400" fill="#1f2328" text-anchor="start" xml:space="preserve">critical cases; LODESTAR hand-off</text>
+<path d="M884,230 L914,230" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<path d="M884,470 L914,470" fill="none" stroke="#6e7781" stroke-width="1.7" marker-end="url(#ah)"/>
+<rect x="24" y="752" width="1232" height="126" rx="8" fill="#f6f8fa" stroke="#d1d9e0" stroke-width="1"/>
+<text x="40" y="776" font-size="14" font-weight="650" fill="#1f2328" text-anchor="start" xml:space="preserve">Data flow and cost posture</text>
+<text x="40" y="800" font-size="12" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">1. Telemetry lands as files (no per-GB SIEM ingestion licence)  2. Workers normalise, enrich, detect and write Parquet  3. Alerts -&gt; triage agent via MCP</text>
+<text x="40" y="817" font-size="12" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">4. Cases sev &gt;= 4 -&gt; investigation agent; containment is requested  5. Responder approves in the console / chat  6. Executor acts; everything is audit-chained</text>
+<text x="40" y="834" font-size="12" font-weight="400" fill="#59636e" text-anchor="start" xml:space="preserve">Model spend is bounded: per-run and daily budgets; when exceeded or the endpoint is down, triage degrades to the deterministic analyst (labelled).</text>
+</svg>

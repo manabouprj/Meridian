@@ -1,0 +1,21 @@
+# Direct dependencies (loose). The pinned, reproducible set is requirements.txt (regenerate: make lock)
+fastapi>=0.115,<1.0
+uvicorn[standard]>=0.30
+pydantic>=2.8,<3
+pyyaml>=6.0
+jinja2>=3.1
+httpx>=0.27
+python-multipart>=0.0.9
+pyjwt[crypto]>=2.8
+sqlalchemy>=2.0
+psycopg[binary]>=3.2
+duckdb>=1.2
+pyarrow>=17
+pytz
+fastavro>=1.9
+mcp>=2.2,<3
+anthropic>=1.10
+boto3>=1.35
+azure-identity>=1.17
+azure-storage-blob>=12.20
+azure-storage-queue>=12.10
