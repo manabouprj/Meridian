@@ -1,7 +1,7 @@
 prefix           = "meridian"
 location         = "uaenorth"        # data residency for the lake, database and compute
 foundry_location = "eastus2"         # a region where your chosen Claude models are offered in Foundry
-image            = "acrmeridian.azurecr.io/meridian:1.0.0"
+image            = "acrmeridian.azurecr.io/meridian:1.0.1"
 acr_id           = "/subscriptions/<sub>/resourceGroups/<rg>/providers/Microsoft.ContainerRegistry/registries/acrmeridian"
 enable_adx       = false
 

@@ -36,10 +36,10 @@ export ECR=$ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
 aws ecr create-repository --repository-name meridian --image-scanning-configuration scanOnPush=true \
   --encryption-configuration encryptionType=KMS
 aws ecr get-login-password | docker login --username AWS --password-stdin $ECR
-docker buildx build --platform linux/arm64 -t $ECR/meridian:1.0.0 --push .
+docker buildx build --platform linux/arm64 -t $ECR/meridian:1.0.1 --push .
 ```
 
-**Verify:** `aws ecr describe-images --repository-name meridian --query "imageDetails[].imageTags"` lists `1.0.0`, and the scan shows no critical findings.
+**Verify:** `aws ecr describe-images --repository-name meridian --query "imageDetails[].imageTags"` lists `1.0.1`, and the scan shows no critical findings.
 
 ## Step 3: configure Terraform
 
@@ -50,7 +50,7 @@ cp terraform.tfvars.example terraform.tfvars
 
 Set these values in `terraform.tfvars`:
 
-* `prefix`, `region`, `bedrock_region`, `bedrock_model_arns`, `image` (`$ECR/meridian:1.0.0`);
+* `prefix`, `region`, `bedrock_region`, `bedrock_model_arns`, `image` (`$ECR/meridian:1.0.1`);
 * `certificate_arn` (ACM certificate for the console hostname);
 * `public_url`, `oidc_issuer`, `oidc_client_id`;
 * `object_lock_mode` (`GOVERNANCE` unless legal approved `COMPLIANCE`);
@@ -110,7 +110,7 @@ The image ships `config/examples/aws.yaml`. For your organisation, edit a copy:
 Rebuild the image with it as `/app/config/examples/aws.yaml`, and include the context files (`assets.csv`, `identities.csv`, `intel/`), or deliver them through your image pipeline. Then roll out the new tag:
 
 ```bash
-terraform apply -var image=$ECR/meridian:1.0.0-<build>
+terraform apply -var image=$ECR/meridian:1.0.1-<build>
 ```
 
 **Verify:** the next step's `doctor` shows your organisation name and source count.

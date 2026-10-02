@@ -14,7 +14,7 @@ variable "foundry_location" {
   default     = "eastus2"
 }
 variable "image" {
-  description = "Container image, e.g. <acr>.azurecr.io/meridian:1.0.0"
+  description = "Container image, e.g. <acr>.azurecr.io/meridian:1.0.1"
   type        = string
 }
 variable "acr_id" {

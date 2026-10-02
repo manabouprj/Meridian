@@ -59,7 +59,7 @@ variables {
   prefix           = "meridian"
   location         = "uaenorth"
   foundry_location = "eastus2"
-  image            = "acrmeridian.azurecr.io/meridian:1.0.0"
+  image            = "acrmeridian.azurecr.io/meridian:1.0.1"
   acr_id           = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.ContainerRegistry/registries/acrmeridian"
   public_url       = "https://meridian.example"
   oidc_client_id   = "00000000-0000-0000-0000-000000000000"

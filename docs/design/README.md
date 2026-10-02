@@ -1,6 +1,6 @@
 # MERIDIAN design documentation
 
-This folder is the detailed design of MERIDIAN 1.0.0. It sits between the architecture documents (what and why) and the deployment runbooks (how to stand it up).
+This folder is the detailed design of MERIDIAN 1.0.1. It sits between the architecture documents (what and why) and the deployment runbooks (how to stand it up).
 
 | Document | Contents | Audience |
 | --- | --- | --- |

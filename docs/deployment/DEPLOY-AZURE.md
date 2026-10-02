@@ -30,10 +30,10 @@ for ns in Microsoft.App Microsoft.CognitiveServices Microsoft.DBforPostgreSQL Mi
 ## Step 2: build and push the image
 
 ```bash
-az acr build --registry $ACR --image meridian:1.0.0 .
+az acr build --registry $ACR --image meridian:1.0.1 .
 ```
 
-**Verify:** `az acr repository show-tags -n $ACR --repository meridian -o tsv` lists `1.0.0`.
+**Verify:** `az acr repository show-tags -n $ACR --repository meridian -o tsv` lists `1.0.1`.
 
 ## Step 3: Entra ID app registrations and groups
 
@@ -76,7 +76,7 @@ cp terraform.tfvars.example terraform.tfvars
 
 Set these values in `terraform.tfvars`:
 
-* `prefix`, `location`, `foundry_location`, `image` (`<acr>.azurecr.io/meridian:1.0.0`), `acr_id`;
+* `prefix`, `location`, `foundry_location`, `image` (`<acr>.azurecr.io/meridian:1.0.1`), `acr_id`;
 * `public_url` and `oidc_client_id` (`$CONSOLE_APP`);
 * `model_deployments`: the format, name and version exactly as shown in your Foundry model catalog;
 * `deployer_cidrs`: your runner's egress IP, for example `["203.0.113.10/32"]`. The VNet does not exist yet, so the first apply reaches Key Vault through this narrow allow-list.

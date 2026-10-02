@@ -79,6 +79,7 @@ The production path (detailed in [OPERATIONS.md](docs/OPERATIONS.md)):
 | | |
 | --- | --- |
 | Executive | [Executive review: readiness, phases, cost, TCO, ROI](docs/EXECUTIVE_REVIEW.md) |
+| Releases and plan | [Changelog](CHANGELOG.md) · [Roadmap](docs/ROADMAP.md) (phases as GitHub milestones and issues) |
 | Architecture | [HLD](docs/HLD.md) · [LLD Azure](docs/LLD-azure.md) · [LLD AWS](docs/LLD-aws.md) · [Security](docs/SECURITY.md) · [Peer review](docs/PEER_REVIEW.md) |
 | Build documents (PDF) | [AZ-00 Azure + Foundry](docs/pdf/MERIDIAN-AZ-00-Foundry-Design-and-Deployment.pdf) · [AWS-00 AWS + Bedrock](docs/pdf/MERIDIAN-AWS-00-Bedrock-Design-and-Deployment.pdf): design, residency, setup to go-live, verification, agent constitutions (sources in [docs/cloud](docs/cloud)) |
 | Log ingestion | [LOG-00 Log ingestion, normalisation, retention and rotation](docs/pdf/MERIDIAN-LOG-00-Log-Ingestion-Normalisation-Retention.pdf): six paths for hybrid estates, Windows/Sysmon, OCSF normalisation, per-class retention (source in [docs/ingestion](docs/ingestion)) |
@@ -120,7 +121,7 @@ tests/               unit, integration and golden-set evaluation tests
 
 ## Status and honesty
 
-Version 1.0.0 is a release candidate for a production pilot. Here is what has and has not been exercised:
+Version 1.0.1 (1.0.0 plus the fixes in [CHANGELOG.md](CHANGELOG.md)) is a release candidate for a production pilot. Here is what has and has not been exercised:
 
 * **Covered by the test suite:** the rules, the query compiler (SQL and KQL), the agent runtime guarantees, MCP authentication and scopes, approvals, and the end-to-end demo.
 * **Verified without a live run:**

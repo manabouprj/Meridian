@@ -1,0 +1,228 @@
+{
+  "milestones": [
+    "Phase 0 - Foundation",
+    "Phase 1 - Shadow lake",
+    "Phase 2 - Detection parity",
+    "Phase 3 - AI trust",
+    "Phase 4 - Operational parity",
+    "Phase 5 - Decommission"
+  ],
+  "issues": [
+    {
+      "phase": 0,
+      "milestone": "Phase 0 - Foundation",
+      "area": "infra",
+      "title": "First live deployment on Azure (non-production)",
+      "description": "Deploy infra/azure following AZ-00 stages S0-S7 in a non-production subscription.",
+      "done_when": "`scripts/verify_deployment.py azure` reports no FAIL; output filed",
+      "reference": "AZ-00 \u00a77-8"
+    },
+    {
+      "phase": 0,
+      "milestone": "Phase 0 - Foundation",
+      "area": "infra",
+      "title": "First live deployment on AWS (non-production)",
+      "description": "Deploy infra/aws following AWS-00 stages S0-S7 in a non-production account (me-central-1).",
+      "done_when": "`scripts/verify_deployment.py aws` reports no FAIL; output filed",
+      "reference": "AWS-00 \u00a77-8"
+    },
+    {
+      "phase": 0,
+      "milestone": "Phase 0 - Foundation",
+      "area": "compliance",
+      "title": "Residency decision for AI inference signed by the DPO",
+      "description": "Choose the residency row (Azure US data zone; AWS global or geographic inference; or deterministic only) and sign the outsourcing sentence.",
+      "done_when": "Signed decision recorded; Terraform model settings match it",
+      "reference": "AZ-00 / AWS-00 \u00a76"
+    },
+    {
+      "phase": 0,
+      "milestone": "Phase 0 - Foundation",
+      "area": "security",
+      "title": "Pin the base image digest and turn on Dependabot alerts and security updates",
+      "description": "Pin FROM python:3.12-slim@sha256:<digest>; enable Dependabot alerts and security updates in the repository settings.",
+      "done_when": "Dockerfile pinned by digest; first Dependabot PRs reviewed",
+      "reference": "CHANGELOG 1.0.1"
+    },
+    {
+      "phase": 0,
+      "milestone": "Phase 0 - Foundation",
+      "area": "infra",
+      "title": "Alarms as code",
+      "description": "Create Azure Monitor / CloudWatch alarms for the metrics in OPERATIONS \u00a74 and LOG-00 \u00a79 (silent sources, reject ratio, collector, DLQ, heartbeats, LODESTAR push).",
+      "done_when": "Alarms deployed by Terraform; each fired once in a test",
+      "reference": "OPERATIONS \u00a74; LOG-00 \u00a79"
+    },
+    {
+      "phase": 0,
+      "milestone": "Phase 0 - Foundation",
+      "area": "infra",
+      "title": "Drilled disaster-recovery exercise",
+      "description": "Restore PostgreSQL from backup into a clean environment and rebuild the lake from landing with `meridian replay`.",
+      "done_when": "Restore and replay timed and documented",
+      "reference": "UPGRADE-ROLLBACK"
+    },
+    {
+      "phase": 1,
+      "milestone": "Phase 1 - Shadow lake",
+      "area": "ingestion",
+      "title": "Onboard Windows and Active Directory through Event Forwarding and NXLog",
+      "description": "Audit policy by GPO, WEF subscription to two collectors, NXLog CE to the TLS syslog receiver; include Sysmon.",
+      "done_when": "`map-test` evidence filed; rejects < 1%; failed-logon and certutil tests raise alerts",
+      "reference": "LOG-00 \u00a75, \u00a710"
+    },
+    {
+      "phase": 1,
+      "milestone": "Phase 1 - Shadow lake",
+      "area": "ingestion",
+      "title": "Onboard Linux, network and OT syslog through site relays",
+      "description": "rsyslog / syslog-ng relays per site with TLS and disk queues; patterns for key device messages.",
+      "done_when": "Sources fresh for 2 weeks; patterns cover the agreed messages",
+      "reference": "LOG-00 \u00a74.3"
+    },
+    {
+      "phase": 1,
+      "milestone": "Phase 1 - Shadow lake",
+      "area": "ingestion",
+      "title": "Onboard Microsoft 365 audit and Okta through the API collector",
+      "description": "Configure pull blocks and extra_secrets; validate the field maps on live data.",
+      "done_when": "Field maps reviewed; `meridian_pull_last_run_ok` = 1 for 2 weeks",
+      "reference": "LOG-00 \u00a74.5"
+    },
+    {
+      "phase": 1,
+      "milestone": "Phase 1 - Shadow lake",
+      "area": "ingestion",
+      "title": "E-mail security mapper",
+      "description": "Dedicated mapper for the e-mail security source (Defender for Office 365 or the e-mail gateway) to OCSF 4009.",
+      "done_when": "Mapper with tests on real samples; phishing rules use it",
+      "reference": "EXECUTIVE_REVIEW \u00a73.1"
+    },
+    {
+      "phase": 1,
+      "milestone": "Phase 1 - Shadow lake",
+      "area": "infra",
+      "title": "Lake compaction and narrower agent query windows",
+      "description": "Compact small Parquet files per partition; entity-sorted files; tighter default agent windows.",
+      "done_when": "As-built query cost within the cost model (EXECUTIVE_REVIEW \u00a75)",
+      "reference": "EXECUTIVE_REVIEW \u00a73.3, \u00a75"
+    },
+    {
+      "phase": 1,
+      "milestone": "Phase 1 - Shadow lake",
+      "area": "infra",
+      "title": "Schema migrations for the operational store",
+      "description": "Introduce Alembic (or equivalent) so store schema changes are versioned and reversible.",
+      "done_when": "Upgrade and rollback tested on PostgreSQL",
+      "reference": "EXECUTIVE_REVIEW \u00a73.1"
+    },
+    {
+      "phase": 2,
+      "milestone": "Phase 2 - Detection parity",
+      "area": "detection",
+      "title": "Port the top SIEM rules by true-positive value",
+      "description": "Rank the last 12 months of SIEM true positives by rule and port them to Sigma / correlations.",
+      "done_when": ">= 95% of last year's SIEM true positives reproduced",
+      "reference": "EXECUTIVE_REVIEW \u00a74"
+    },
+    {
+      "phase": 2,
+      "milestone": "Phase 2 - Detection parity",
+      "area": "detection",
+      "title": "Lateral-movement detections",
+      "description": "Rules for remote logons, remote service creation, admin share use and remote execution using the Windows mapper.",
+      "done_when": "Rules with tests; fired in the attack-simulation harness",
+      "reference": "EXECUTIVE_REVIEW \u00a73.1"
+    },
+    {
+      "phase": 2,
+      "milestone": "Phase 2 - Detection parity",
+      "area": "detection",
+      "title": "Attack-simulation test harness",
+      "description": "Lab harness that replays known techniques and checks the expected alerts.",
+      "done_when": "Harness in CI or a scheduled lab run with a coverage report",
+      "reference": "EXECUTIVE_REVIEW \u00a74"
+    },
+    {
+      "phase": 2,
+      "milestone": "Phase 2 - Detection parity",
+      "area": "integration",
+      "title": "Report ATT&CK coverage to LODESTAR",
+      "description": "Send attack_coverage_pct against an agreed technique set from LODESTAR's vertical profile.",
+      "done_when": "KPI shown as measured in LODESTAR",
+      "reference": "INT-00 \u00a710"
+    },
+    {
+      "phase": 3,
+      "milestone": "Phase 3 - AI trust",
+      "area": "ai",
+      "title": "Golden set of 500+ labelled alerts and weekly evaluation",
+      "description": "Label alerts from our own SOC; run `meridian eval` weekly and track agreement.",
+      "done_when": ">= 90% analyst agreement for 4 weeks",
+      "reference": "EXECUTIVE_REVIEW \u00a73.1"
+    },
+    {
+      "phase": 3,
+      "milestone": "Phase 3 - AI trust",
+      "area": "ai",
+      "title": "Drift monitoring and sampled review of auto-closures",
+      "description": "Monitor verdict distributions per rule; sample auto-closed alerts weekly.",
+      "done_when": "No missed incident in sampled auto-closures over a quarter",
+      "reference": "EXECUTIVE_REVIEW \u00a74"
+    },
+    {
+      "phase": 4,
+      "milestone": "Phase 4 - Operational parity",
+      "area": "ux",
+      "title": "Analyst search and dashboards",
+      "description": "Ad-hoc search UI over the lake and SOC dashboards.",
+      "done_when": "Analysts complete a month of hunts without the SIEM",
+      "reference": "EXECUTIVE_REVIEW \u00a73.1"
+    },
+    {
+      "phase": 4,
+      "milestone": "Phase 4 - Operational parity",
+      "area": "integration",
+      "title": "ServiceNow / Jira integration and case SLAs",
+      "description": "Create and sync tickets from cases; SLA timers and escalation.",
+      "done_when": "Two-way sync tested; SLA report",
+      "reference": "EXECUTIVE_REVIEW \u00a74"
+    },
+    {
+      "phase": 4,
+      "milestone": "Phase 4 - Operational parity",
+      "area": "integration",
+      "title": "LODESTAR context back into MERIDIAN and dual-secret rotation",
+      "description": "Read-only MCP context tool exposing LODESTAR priority and owner; accept current and next webhook secrets.",
+      "done_when": "Agents cite LODESTAR priority; rotation without rejected pushes",
+      "reference": "INT-00 \u00a710"
+    },
+    {
+      "phase": 5,
+      "milestone": "Phase 5 - Decommission",
+      "area": "compliance",
+      "title": "Compliance coverage reporting and auditor walkthrough",
+      "description": "Map controls to PCI DSS 10, ISO 27001 and UAE IAS; QSA / IAS pre-audit.",
+      "done_when": "Pre-audit passed",
+      "reference": "EXECUTIVE_REVIEW \u00a73.1, \u00a74"
+    },
+    {
+      "phase": 5,
+      "milestone": "Phase 5 - Decommission",
+      "area": "ingestion",
+      "title": "Historical SIEM export and decommission runbook",
+      "description": "Export retained SIEM history into the lake; read-only period; retirement checklist.",
+      "done_when": "History queryable in MERIDIAN; SIEM retired at renewal",
+      "reference": "EXECUTIVE_REVIEW \u00a74"
+    },
+    {
+      "phase": 0,
+      "milestone": "Phase 0 - Foundation",
+      "area": "repo",
+      "title": "Choose and add a licence",
+      "description": "Decide the licence (proprietary or open source) before sharing the repository beyond the owner.",
+      "done_when": "LICENSE file committed",
+      "reference": "Repository review, October 2026"
+    }
+  ]
+}

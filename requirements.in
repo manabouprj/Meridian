@@ -1,4 +1,4 @@
-# Direct dependencies (loose). The pinned, reproducible set is requirements.txt (regenerate: make lock)
+# Direct dependencies (loose). The pinned, hash-locked set is requirements.txt (regenerate: make lock)
 fastapi>=0.115,<1.0
 uvicorn[standard]>=0.30
 pydantic>=2.8,<3
@@ -12,6 +12,7 @@ psycopg[binary]>=3.2
 duckdb>=1.2
 pyarrow>=17
 pytz
+tzdata                                   # IANA time zones where the OS has none (Windows); used by source timezones
 fastavro>=1.9
 mcp>=2.2,<3
 anthropic>=1.10

@@ -1,0 +1,10 @@
+# Every change needs a review from the owner. Security-sensitive paths are listed explicitly so that, if more
+# maintainers join, these stay with the people accountable for them.
+*                                   @manabouprj
+/meridian/agents/                   @manabouprj
+/meridian/mcp_servers/              @manabouprj
+/meridian/response/                 @manabouprj
+/meridian/api/                      @manabouprj
+/infra/                             @manabouprj
+/config/rules/                      @manabouprj
+/.github/                           @manabouprj

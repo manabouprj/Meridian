@@ -1,0 +1,7 @@
+# Development and CI tools. Runtime pins come from requirements.txt (constraint), so dev and prod resolve identically.
+# Regenerate both with: make lock
+-c requirements.txt
+-r requirements.in
+pytest==9.1.1
+ruff==0.16.9
+python-hcl2==8.1.4

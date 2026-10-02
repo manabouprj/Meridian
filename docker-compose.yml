@@ -4,7 +4,7 @@
 services:
   api:
     build: .
-    image: meridian:1.0.0
+    image: meridian:1.0.1
     env_file: .env
     command: ["serve", "--host", "0.0.0.0", "--port", "8090"]
     ports: ["127.0.0.1:8090:8090"]
@@ -20,7 +20,7 @@ services:
     cap_drop: [ALL]
     restart: unless-stopped
   worker:
-    image: meridian:1.0.0
+    image: meridian:1.0.1
     env_file: .env
     command: ["worker"]
     volumes: [meridian-data:/app/data, ./config:/app/config:ro]
@@ -30,7 +30,7 @@ services:
     cap_drop: [ALL]
     restart: unless-stopped
   agents:
-    image: meridian:1.0.0
+    image: meridian:1.0.1
     env_file: .env
     command: ["agents"]
     volumes: [meridian-data:/app/data, ./config:/app/config:ro]
@@ -40,7 +40,7 @@ services:
     cap_drop: [ALL]
     restart: unless-stopped
   scheduler:
-    image: meridian:1.0.0
+    image: meridian:1.0.1
     env_file: .env
     command: ["scheduler"]
     volumes: [meridian-data:/app/data, ./config:/app/config:ro]
@@ -50,7 +50,7 @@ services:
     cap_drop: [ALL]
     restart: unless-stopped
   collector:
-    image: meridian:1.0.0
+    image: meridian:1.0.1
     env_file: .env
     command: ["collect"]
     volumes: [meridian-data:/app/data, ./config:/app/config:ro]
@@ -60,7 +60,7 @@ services:
     cap_drop: [ALL]
     restart: unless-stopped
   syslog:
-    image: meridian:1.0.0
+    image: meridian:1.0.1
     env_file: .env
     command: ["syslog", "--source", "syslog", "--port", "5514"]
     ports: ["5514:5514/udp", "5514:5514/tcp"]

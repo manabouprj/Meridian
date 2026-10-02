@@ -2,7 +2,7 @@
 
 | Item | Value |
 | --- | --- |
-| Product | MERIDIAN 1.0.0 |
+| Product | MERIDIAN 1.0.1 |
 | Document | Low-Level Design, AWS option |
 | IaC | `infra/aws` (Terraform >= 1.9, aws ~> 6.10) |
 | Runtime config | `config/examples/aws.yaml` (`MERIDIAN_CONFIG`) |
@@ -210,7 +210,7 @@ Recommended CloudWatch alarms:
 
 1. Prerequisites:
    * a security-tooling account;
-   * an ECR repository with the image (`docker buildx build --platform linux/arm64 -t <ecr>/meridian:1.0.0 --push .`);
+   * an ECR repository with the image (`docker buildx build --platform linux/arm64 -t <ecr>/meridian:1.0.1 --push .`);
    * an ACM certificate for the internal ALB;
    * Bedrock model access granted for the chosen Claude models in `bedrock_region`;
    * a remote state backend (S3 + DynamoDB lock).

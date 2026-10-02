@@ -1,6 +1,6 @@
 # MERIDIAN - Security design and controls
 
-This document lists the security controls of MERIDIAN 1.0.0, the threats they address, the residual risks, and the hardening options for regulated estates. It complements HLD section 8.
+This document lists the security controls of MERIDIAN 1.0.1, the threats they address, the residual risks, and the hardening options for regulated estates. It complements HLD section 8.
 
 ## 1. Trust boundaries
 

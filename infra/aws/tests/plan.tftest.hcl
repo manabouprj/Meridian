@@ -59,7 +59,7 @@ variables {
   bedrock_region     = "me-central-1"
   bedrock_fast_model = "global.anthropic.claude-haiku-4-5-test"
   bedrock_deep_model = "global.anthropic.claude-sonnet-5-5-test"
-  image              = "111122223333.dkr.ecr.me-central-1.amazonaws.com/meridian:1.0.0"
+  image              = "111122223333.dkr.ecr.me-central-1.amazonaws.com/meridian:1.0.1"
   certificate_arn    = "arn:aws:acm:me-central-1:111122223333:certificate/00000000-0000-0000-0000-000000000000"
   public_url         = "https://meridian.example"
   oidc_issuer        = "https://login.example/v2.0"

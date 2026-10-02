@@ -4,7 +4,7 @@ SIEM-less detection, investigation and response with AI agents over the Model Co
 
 | Item | Value |
 | --- | --- |
-| Product | MERIDIAN 1.0.0 (sibling product of LODESTAR) |
+| Product | MERIDIAN 1.0.1 (sibling product of LODESTAR) |
 | Document | High-Level Design (HLD) |
 | Deployment options | Microsoft Azure + Microsoft Foundry, or Amazon Web Services + Amazon Bedrock (equal depth) |
 | Companion documents | LLD-azure.md, LLD-aws.md, SECURITY.md, OPERATIONS.md, MCP-TOOLS.md |

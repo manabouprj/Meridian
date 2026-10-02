@@ -97,6 +97,29 @@ def _db_from_env() -> str | None:
             f"{os.environ.get('MERIDIAN_DB_NAME', 'meridian')}?sslmode=require")
 
 
+def _check_sources(sources: list[dict[str, Any]]) -> None:
+    """Fail at start-up, not hours later in the worker: unique keys, known formats, valid time zones."""
+    from .mappers import REGISTRY
+    from .mappers.common import UnknownTimeZone, zone
+    seen: set[str] = set()
+    for i, s in enumerate(sources):
+        key = s.get("key") if isinstance(s, dict) else None
+        if not key:
+            raise ConfigError(f"sources[{i}] needs a key")
+        if key in seen:
+            raise ConfigError(f"source key '{key}' is used twice")
+        seen.add(key)
+        fmt = s.get("format", "json")
+        if fmt not in REGISTRY:
+            raise ConfigError(f"source '{key}': unknown format '{fmt}'. Choose: {', '.join(sorted(REGISTRY))}")
+        tz = (s.get("settings") or {}).get("timezone")
+        if tz:
+            try:
+                zone(str(tz))
+            except UnknownTimeZone as exc:
+                raise ConfigError(f"source '{key}': {exc}") from exc
+
+
 def load_settings(path: str | Path | None = None, overrides: dict[str, Any] | None = None) -> Settings:
     load_dotenv()
     p = Path(path or os.environ.get("MERIDIAN_CONFIG", ROOT / "config" / "meridian.yaml"))
@@ -120,6 +143,8 @@ def load_settings(path: str | Path | None = None, overrides: dict[str, Any] | No
     engine = lake.get("query_engine", "duckdb")
     if engine not in ("duckdb", "athena", "adx"):
         raise ConfigError("lake.query_engine must be duckdb, athena or adx")
+
+    _check_sources(raw.get("sources") or [])
 
     def _root(v: str) -> str:
         if "://" in v:
