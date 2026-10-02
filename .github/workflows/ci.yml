@@ -11,7 +11,7 @@ jobs:
     timeout-minutes: 30
     strategy: {matrix: {python: ["3.11", "3.12"]}}
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262          # v4.4.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1          # v7.0.1
         with: {persist-credentials: false}
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97      # v7.0.0
         with: {python-version: "${{ matrix.python }}", cache: pip}
@@ -36,7 +36,7 @@ jobs:
         ports: ["5432:5432"]
         options: --health-cmd pg_isready --health-interval 5s --health-retries 10
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262          # v4.4.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1          # v7.0.1
         with: {persist-credentials: false}
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97      # v7.0.0
         with: {python-version: "3.12", cache: pip}
@@ -47,9 +47,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262          # v4.4.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1          # v7.0.1
         with: {persist-credentials: false}
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262          # v4.4.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1          # v7.0.1
         with:
           repository: manabouprj/Lodestar
           path: lodestar
@@ -68,7 +68,7 @@ jobs:
     timeout-minutes: 30
     strategy: {matrix: {cloud: [azure, aws]}}
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262          # v4.4.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1          # v7.0.1
         with: {persist-credentials: false}
       - uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e  # v4.0.1
       - run: terraform fmt -check -recursive
@@ -82,7 +82,7 @@ jobs:
     timeout-minutes: 30
     needs: test
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262          # v4.4.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1          # v7.0.1
         with: {persist-credentials: false}
       - run: docker build -t meridian:ci .
       - run: docker run --rm meridian:ci rules --check
