@@ -80,3 +80,19 @@ def test_lodestar_coverage_is_measured_not_assumed(tmp_path):
     st.mark_batch("firewall/2026/10/01/x.log.gz", 10, 0)
     h = lodestar_payload(st, sources=["firewall", "proxy", "mde", "entra"])["health"]
     assert h["coverage_pct"] == 25 and h["kpis"]["log_sources_silent"] == 3
+
+
+def test_roadmap_issues_are_consistent():
+    """docs/roadmap/issues.json drives scripts/create_roadmap_issues.ps1; ROADMAP.md must list every item."""
+    import json
+
+    from conftest import ROOT
+    data = json.loads((ROOT / "docs" / "roadmap" / "issues.json").read_text())
+    md = (ROOT / "docs" / "ROADMAP.md").read_text()
+    titles = [i["title"] for i in data["issues"]]
+    assert len(titles) == len(set(titles))
+    for i in data["issues"]:
+        assert i["milestone"] in data["milestones"] and i["phase"] in range(6)
+        assert i["area"] in {"infra", "ingestion", "detection", "ai", "integration", "ux", "compliance", "security", "repo"}
+        assert i["title"] in md
+        assert all('"' not in str(v) for v in i.values())        # Windows PowerShell 5.1 mangles quotes in native args

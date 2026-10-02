@@ -23,10 +23,10 @@ Suitable for a proof of value on one Linux VM: 4 vCPU, 16 GB RAM and 200 GB disk
 ### Step 1: build the image
 
 ```bash
-docker build -t meridian:1.0.0 .
+docker build -t meridian:1.0.1 .
 ```
 
-**Verify:** `docker run --rm meridian:1.0.0 rules --check` prints `30 rules loaded, 0 error(s)`.
+**Verify:** `docker run --rm meridian:1.0.1 rules --check` prints `30 rules loaded, 0 error(s)`.
 
 ### Step 2: create secrets
 

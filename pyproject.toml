@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "meridian-security"
-version = "1.0.0"
+version = "1.0.1"
 description = "MERIDIAN - SIEM-less detection, investigation and response with AI agents over MCP (Microsoft Foundry / Amazon Bedrock)"
 readme = "README.md"
 requires-python = ">=3.11"

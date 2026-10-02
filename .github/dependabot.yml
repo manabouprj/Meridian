@@ -1,0 +1,28 @@
+# Dependabot: weekly update pull requests. Every PR runs the full CI (tests, Terraform, image scan) before merge.
+# Turn on "Dependabot alerts" and "Dependabot security updates" in Settings -> Code security as well.
+version: 2
+updates:
+  - package-ecosystem: pip                 # requirements.in / requirements*.txt (hash-locked with pip-compile)
+    directory: "/"
+    schedule: {interval: weekly, day: monday}
+    open-pull-requests-limit: 5
+    groups:
+      cloud-sdks: {patterns: ["boto3", "botocore", "azure-*", "anthropic"]}
+      web: {patterns: ["fastapi", "starlette", "uvicorn", "pydantic*", "httpx", "httpcore"]}
+    labels: [dependencies]
+  - package-ecosystem: github-actions      # SHA-pinned actions in .github/workflows
+    directory: "/"
+    schedule: {interval: weekly, day: monday}
+    labels: [dependencies, ci]
+  - package-ecosystem: docker              # python base image in the Dockerfile
+    directory: "/"
+    schedule: {interval: weekly, day: monday}
+    labels: [dependencies]
+  - package-ecosystem: terraform           # azurerm / random providers
+    directory: "/infra/azure"
+    schedule: {interval: weekly, day: monday}
+    labels: [dependencies, infra]
+  - package-ecosystem: terraform           # aws / random providers
+    directory: "/infra/aws"
+    schedule: {interval: weekly, day: monday}
+    labels: [dependencies, infra]

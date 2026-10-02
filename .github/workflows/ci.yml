@@ -1,15 +1,19 @@
 name: ci
+# Third-party actions are pinned to full commit SHAs (tag in the comment); Dependabot proposes updates.
 on:
-  push: {branches: [main]}
+  push: {branches: [main], tags: ["v*"]}
   pull_request:
 permissions: {contents: read}
+concurrency: {group: "ci-${{ github.ref }}", cancel-in-progress: true}
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     strategy: {matrix: {python: ["3.11", "3.12"]}}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262          # v4.4.0
+        with: {persist-credentials: false}
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065      # v5.6.0
         with: {python-version: "${{ matrix.python }}", cache: pip}
       - run: pip install -r requirements-dev.txt
       - run: ruff check meridian tests
@@ -24,6 +28,7 @@ jobs:
       - run: python scripts/cost_model.py
   test-postgres:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     services:
       postgres:
         image: postgres:16
@@ -31,30 +36,41 @@ jobs:
         ports: ["5432:5432"]
         options: --health-cmd pg_isready --health-interval 5s --health-retries 10
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262          # v4.4.0
+        with: {persist-credentials: false}
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065      # v5.6.0
         with: {python-version: "3.12", cache: pip}
       - run: pip install -r requirements-dev.txt
       - run: pytest -q
         env: {MERIDIAN_TEST_PG: "postgresql+psycopg://meridian:meridian-ci@127.0.0.1:5432/meridian"}
   lodestar-contract:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/checkout@v4
-        with: {repository: manabouprj/Lodestar, path: lodestar}
-        continue-on-error: true            # private / unavailable LODESTAR repo: the job reports "skipped"
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262          # v4.4.0
+        with: {persist-credentials: false}
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262          # v4.4.0
+        with:
+          repository: manabouprj/Lodestar
+          path: lodestar
+          persist-credentials: false
+          # The default token cannot read another private repository. Add a fine-grained, read-only token for
+          # manabouprj/Lodestar as the secret LODESTAR_READ_TOKEN to run this contract test; without it the test skips.
+          token: ${{ secrets.LODESTAR_READ_TOKEN || github.token }}
+        continue-on-error: true
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065      # v5.6.0
         with: {python-version: "3.12", cache: pip}
       - run: pip install -r requirements-dev.txt
       - run: pytest -q tests/test_lodestar_contract.py
         env: {LODESTAR_PATH: "${{ github.workspace }}/lodestar"}
   terraform:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     strategy: {matrix: {cloud: [azure, aws]}}
     steps:
-      - uses: actions/checkout@v4
-      - uses: hashicorp/setup-terraform@v3
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262          # v4.4.0
+        with: {persist-credentials: false}
+      - uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd  # v3.1.2
       - run: terraform fmt -check -recursive
         working-directory: infra/${{ matrix.cloud }}
       - run: terraform init -backend=false && terraform validate
@@ -63,8 +79,18 @@ jobs:
         working-directory: infra/${{ matrix.cloud }}
   docker:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     needs: test
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262          # v4.4.0
+        with: {persist-credentials: false}
       - run: docker build -t meridian:ci .
       - run: docker run --rm meridian:ci rules --check
+      - name: vulnerability scan (fails on fixable critical findings)
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25   # v0.36.0
+        with: {image-ref: "meridian:ci", format: table, severity: CRITICAL, ignore-unfixed: true, exit-code: "1"}
+      - name: software bill of materials (CycloneDX)
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25   # v0.36.0
+        with: {image-ref: "meridian:ci", format: cyclonedx, output: sbom.cdx.json, skip-setup-trivy: true}
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02   # v4.6.2
+        with: {name: sbom, path: sbom.cdx.json, retention-days: 90}

@@ -2,7 +2,7 @@
 
 | Item | Value |
 | --- | --- |
-| Product | MERIDIAN 1.0.0 |
+| Product | MERIDIAN 1.0.1 |
 | Document | Low-Level Design, Azure option |
 | IaC | `infra/azure` (Terraform >= 1.9, azurerm ~> 5.7) |
 | Runtime config | `config/examples/azure.yaml` (mounted as `MERIDIAN_CONFIG`) |
@@ -249,7 +249,7 @@ Regional DR runbook (summary): restore PostgreSQL geo-backup in the paired regio
 
 1. Prerequisites:
    * a subscription with quota for Claude deployments in `foundry_location`;
-   * an ACR with the MERIDIAN image (`docker build -t <acr>/meridian:1.0.0 .`);
+   * an ACR with the MERIDIAN image (`docker build -t <acr>/meridian:1.0.1 .`);
    * the two Entra app registrations (4.2);
    * a remote Terraform state backend.
 2. `cp infra/azure/terraform.tfvars.example terraform.tfvars` and set `prefix`, `location`, `foundry_location`, `image`, `acr_id`, `public_url`, `oidc_client_id` and `model_deployments`. Key Vault has no public access, so the first apply uses `deployer_cidrs` (the runner's egress IP, opened only on Key Vault); later applies run from a runner inside the VNet or a peered hub with `deployer_cidrs = []` (deployment/DEPLOY-AZURE.md).

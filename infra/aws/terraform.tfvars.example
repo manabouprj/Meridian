@@ -3,7 +3,7 @@ region          = "me-central-1"   # data residency for the lake, database and c
 bedrock_region  = "me-central-1"   # in-VPC bedrock-runtime endpoint; Claude via GLOBAL cross-region inference (see AWS-00 section 6)
 bedrock_fast_model = "global.anthropic.claude-haiku-4-5-<version>"   # copy exact ids: aws bedrock list-inference-profiles
 bedrock_deep_model = "global.anthropic.claude-sonnet-5-5-<version>"
-image           = "<acct>.dkr.ecr.me-central-1.amazonaws.com/meridian:1.0.0"
+image           = "<acct>.dkr.ecr.me-central-1.amazonaws.com/meridian:1.0.1"
 certificate_arn = "arn:aws:acm:me-central-1:<acct>:certificate/<id>"
 object_lock_mode = "GOVERNANCE"
 

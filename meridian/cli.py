@@ -382,6 +382,12 @@ def cmd_map_test(args) -> int:
     top = {k: v for k, v in (src or {}).items() if k in ("class_uid", "class_field", "class_map", "field_map")}
     settings = {**top, **((src or {}).get("settings") or {}), "key": args.source or fmt}
     if args.timezone:
+        from .mappers.common import UnknownTimeZone, zone
+        try:
+            zone(args.timezone)
+        except UnknownTimeZone as exc:
+            print(exc)
+            return 2
         settings["timezone"] = args.timezone
     mapper = get_mapper(fmt)
     data = Path(args.file).read_bytes()

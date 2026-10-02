@@ -10,20 +10,32 @@ _HAS_ZONE = re.compile(r"(Z|[+-]\d{2}:?\d{2})$")
 _OFFSET = re.compile(r"^([+-])(\d{2}):?(\d{2})$")
 
 
+class UnknownTimeZone(ValueError):
+    pass
+
+
 @lru_cache(maxsize=32)
 def zone(name: str | None) -> tzinfo:
-    """'+04:00', 'UTC' or an IANA name ('Asia/Dubai'). Unknown -> UTC (and the event keeps its raw time)."""
-    if not name or str(name).upper() in ("UTC", "Z", "GMT"):
+    """'+04:00', 'UTC' or an IANA name ('Asia/Dubai').
+
+    An unknown name raises UnknownTimeZone instead of silently using UTC: a typo, or a Windows host without the
+    time-zone database, would otherwise shift every event by hours with no error. The `tzdata` package (a
+    dependency) supplies the IANA database where the operating system has none (Windows)."""
+    if not name or str(name).strip().upper() in ("UTC", "Z", "GMT"):
         return timezone.utc
     m = _OFFSET.match(str(name).strip())
     if m:
+        hours, minutes = int(m.group(2)), int(m.group(3))
+        if hours > 14 or minutes > 59:
+            raise UnknownTimeZone(f"time zone offset out of range: {name!r}")
         sign = -1 if m.group(1) == "-" else 1
-        return timezone(sign * timedelta(hours=int(m.group(2)), minutes=int(m.group(3))))
+        return timezone(sign * timedelta(hours=hours, minutes=minutes))
+    from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
     try:
-        from zoneinfo import ZoneInfo
-        return ZoneInfo(str(name))
-    except Exception:
-        return timezone.utc
+        return ZoneInfo(str(name).strip())
+    except (ZoneInfoNotFoundError, ValueError) as exc:
+        raise UnknownTimeZone(f"unknown time zone {name!r}: use an offset such as '+04:00' or an IANA name such as "
+                              f"'Asia/Dubai' (on Windows, install the 'tzdata' package)") from exc
 
 
 def local_time(value: Any, tz_name: str | None) -> Any:

@@ -99,3 +99,14 @@ Writing LOG-00 checked every documented ingestion method against the code. The g
 | R-46 | SaaS | No way to collect APIs that cannot push (Microsoft 365 Management Activity, Okta, GitHub) | API pull collector (`meridian collect`) with OAuth2, pagination, two-step expansion and safe cursors; `extra_secrets` in Terraform | `test_pull_collector_*`, `test_pull_auth_secrets_must_be_environment_references` |
 | R-47 | Retention | The lake was WORM and tiered but never expired, so storage grew forever and log types could not have different lifetimes; the processed-batch ledger also grew forever | `lake_expire_days` and `lake_expire_days_by_class` (validated against WORM) on both clouds; daily housekeeping of the ledger and finished work items | Terraform tests; `test_housekeeping_removes_old_ledger_rows_only` |
 | R-48 | Onboarding and operations | No way to preview normalisation before go-live; no reject-rate metric; on AWS no least-privilege way for external shippers to write the landing bucket | `meridian map-test`; `meridian_ingest_*_24h` and `meridian_pull_last_run_ok` metrics; per-source `landing_writer_sources` policies | `test_map_test_previews_normalisation`; Terraform test |
+
+## Fifth review: repository review of v1.0.0 (release 1.0.1)
+
+A review of the repository as published on GitHub (fresh clone, CI steps re-run, links and secrets scanned).
+
+| ID | Area | Finding | Resolution | Evidence |
+| --- | --- | --- | --- | --- |
+| R-49 | Time | Unknown time-zone names fell back to UTC silently; on Windows (no time-zone database) every IANA name was unknown, shifting events by hours | `tzdata` dependency; unknown zones and out-of-range offsets raise; sources validated at start-up | `test_unknown_time_zones_fail_at_start_up_not_silently` |
+| R-50 | Supply chain | Actions referenced by moving tags; dependencies pinned by version only; no image scan or SBOM | Actions pinned to SHAs; hash-locked requirements installed with `--require-hashes`; Trivy scan and CycloneDX SBOM in CI; Dependabot | `.github/workflows/ci.yml`, `.github/dependabot.yml` |
+| R-51 | CI | The LODESTAR contract job could never read the private LODESTAR repository, so it always skipped on GitHub | Optional `LODESTAR_READ_TOKEN` secret | CI job `lodestar-contract` |
+| R-52 | Repository | No changelog, code owners or tracked roadmap; Dockerfile comments out of date | CHANGELOG, CODEOWNERS, ROADMAP with issue script; Dockerfile updated | `test_roadmap_issues_are_consistent` |

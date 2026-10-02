@@ -12,7 +12,7 @@ const {
 const ROOT = path.resolve(__dirname, "..");
 const DOCS = path.join(ROOT, "docs");
 const OUT = path.join(ROOT, "dist", "docs");
-const VERSION = "1.0.0";
+const VERSION = "1.0.1";
 const DATE = new Date().toISOString().slice(0, 10);
 
 // A4 with 2 cm margins

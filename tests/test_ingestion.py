@@ -322,3 +322,22 @@ def test_structured_syslog_records_from_journald_and_vector():
     assert (e["class_uid"], e["device"], e["user"], e["status"]) == (3002, "web-02", "root", "Failure")
     v = SYS({"message": "job done", "host": {"name": "web-03"}, "appname": "CRON", "@timestamp": "2026-10-02T10:01:00Z"}, {"key": "linux"})[0]
     assert (v["class_uid"], v["device"], v["app_name"], v["time"].minute) == (0, "web-03", "CRON", 1)
+
+
+def test_unknown_time_zones_fail_at_start_up_not_silently(tmp_path):
+    import yaml
+
+    from meridian.config import ConfigError, load_settings
+    from meridian.mappers.common import UnknownTimeZone, zone
+    assert zone("Asia/Dubai").utcoffset(datetime(2026, 10, 2)) == timedelta(hours=4)    # needs tzdata on Windows
+    assert zone("+05:30").utcoffset(None) == timedelta(hours=5, minutes=30)
+    for bad in ("Asia/Dubay", "+25:00"):
+        with pytest.raises(UnknownTimeZone):
+            zone(bad)
+    for sources, msg in (([{"key": "s", "format": "syslog", "settings": {"timezone": "Asia/Dubay"}}], "unknown time zone"),
+                         ([{"key": "s", "format": "sysl0g"}], "unknown format"),
+                         ([{"key": "s", "format": "cef"}, {"key": "s", "format": "cef"}], "used twice")):
+        p = tmp_path / "c.yaml"
+        p.write_text(yaml.safe_dump({"sources": sources}))
+        with pytest.raises(ConfigError, match=msg):
+            load_settings(str(p))

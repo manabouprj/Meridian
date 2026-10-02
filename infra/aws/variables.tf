@@ -37,7 +37,7 @@ variable "bedrock_model_arns" {
   ]
 }
 variable "image" {
-  description = "Container image in ECR, e.g. <acct>.dkr.ecr.<region>.amazonaws.com/meridian:1.0.0"
+  description = "Container image in ECR, e.g. <acct>.dkr.ecr.<region>.amazonaws.com/meridian:1.0.1"
   type        = string
 }
 variable "vpc_cidr" {
