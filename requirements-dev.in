@@ -3,5 +3,5 @@
 -c requirements.txt
 -r requirements.in
 pytest==9.1.1
-ruff==0.16.9
+ruff==0.16.10
 python-hcl2==8.1.4
