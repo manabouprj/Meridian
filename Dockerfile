@@ -1,7 +1,7 @@
 # MERIDIAN - one image, several roles (api | worker | agents | scheduler | collect | syslog), non-root, read-only friendly.
 # Pin the base image by digest for reproducible builds: docker buildx imagetools inspect python:3.12-slim
 # then FROM python:3.12-slim@sha256:<digest>. Dependabot keeps the tag (and a pinned digest) current.
-FROM python:3.12-slim
+FROM python:3.14-slim
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PIP_NO_CACHE_DIR=1 MERIDIAN_LOG_FORMAT=json
 WORKDIR /app
 RUN groupadd -r meridian && useradd -r -g meridian -d /app meridian
